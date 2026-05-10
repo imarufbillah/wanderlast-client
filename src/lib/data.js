@@ -24,3 +24,20 @@ export const getFeaturedDestinations = async () => {
 
   return featuredDestinations;
 };
+
+export const getDestinationById = async (id) => {
+  try {
+    const res = await fetch(`http://localhost:5000/destinations/${id}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch destinations by ID");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching destinations by ID:", error);
+    return [];
+  }
+};
