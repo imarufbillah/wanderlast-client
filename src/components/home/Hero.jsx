@@ -1,12 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FiSearch,
-  FiMapPin,
-  FiCalendar,
-  FiDollarSign,
-  FiUsers,
-} from "react-icons/fi";
+import { Search, MapPin, Calendar, DollarSign, Users } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -71,12 +65,12 @@ const Hero = () => {
               {/* Input Fields Container */}
               <div className="relative bg-surface/15 backdrop-blur-3xl rounded-2xl sm:rounded-4xl lg:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] p-1.5 sm:p-2 border border-surface/40 flex-1 group hover:shadow-[0_8px_48px_0_rgba(19,218,233,0.3)] transition-all duration-500">
                 {/* Subtle gradient overlay */}
-                <div className="absolute inset-0 rounded-2xl sm:rounded-full bg-linear-to-r from-accent/5 via-transparent to-accent-soft/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 rounded-2xl sm:rounded-4xl lg:rounded-full bg-linear-to-r from-accent/5 via-transparent to-accent-soft/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row items-stretch gap-1.5 sm:gap-2">
                   {/* Destination Input */}
                   <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 bg-surface/25 backdrop-blur-md rounded-xl sm:rounded-full flex-1 hover:bg-surface/35 transition-all duration-300 border border-surface/30 hover:border-accent/40 group/item">
-                    <FiMapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+                    <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
                     <div className="flex-1 min-w-0">
                       <input
                         type="text"
@@ -88,7 +82,7 @@ const Hero = () => {
 
                   {/* Date Input */}
                   <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 bg-surface/25 backdrop-blur-md rounded-xl sm:rounded-full flex-1 hover:bg-surface/35 transition-all duration-300 border border-surface/30 hover:border-accent/40 group/item">
-                    <FiCalendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
                     <div className="flex-1 min-w-0">
                       <input
                         type="text"
@@ -100,7 +94,7 @@ const Hero = () => {
 
                   {/* Budget Input */}
                   <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 bg-surface/25 backdrop-blur-md rounded-xl sm:rounded-full flex-1 hover:bg-surface/35 transition-all duration-300 border border-surface/30 hover:border-accent/40 group/item">
-                    <FiDollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+                    <DollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
                     <div className="flex-1 min-w-0">
                       <input
                         type="text"
@@ -112,7 +106,7 @@ const Hero = () => {
 
                   {/* Travelers Input */}
                   <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 bg-surface/25 backdrop-blur-md rounded-xl sm:rounded-full flex-1 hover:bg-surface/35 transition-all duration-300 border border-surface/30 hover:border-accent/40 group/item">
-                    <FiUsers className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
+                    <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent shrink-0 group-hover/item:scale-110 transition-transform duration-300" />
                     <div className="flex-1 min-w-0">
                       <input
                         type="text"
@@ -128,7 +122,7 @@ const Hero = () => {
               <button className="relative flex items-center justify-center gap-2 px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body rounded-xl sm:rounded-full hover:shadow-[0_0_40px_rgba(19,218,233,0.6)] transition-all duration-300 shadow-[0_8px_24px_rgba(19,218,233,0.4)] hover:scale-105 lg:min-w-35 xl:min-w-40 overflow-hidden group/btn">
                 {/* Animated shine effect */}
                 <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-surface/30 to-transparent" />
-                <FiSearch className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 group-hover/btn:rotate-90 transition-transform duration-300" />
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 group-hover/btn:rotate-90 transition-transform duration-300" />
                 <span className="relative z-10 tracking-wide text-xs sm:text-sm md:text-base">
                   Search
                 </span>
