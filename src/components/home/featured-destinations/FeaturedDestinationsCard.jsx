@@ -18,6 +18,7 @@ const FeaturedDestinationsCard = ({ destination, visibleSlides }) => {
             src={destination.imageUrl}
             alt={`${destination.destinationName}, ${destination.country}`}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
 
