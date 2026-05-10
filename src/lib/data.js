@@ -14,3 +14,13 @@ export const getAllDestinations = async () => {
     return [];
   }
 };
+
+export const getFeaturedDestinations = async () => {
+  const allDestinations = await getAllDestinations();
+
+  const featuredDestinations = allDestinations.filter(
+    (d) => d.featured === true,
+  );
+
+  return featuredDestinations;
+};

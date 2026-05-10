@@ -1,8 +1,8 @@
-import FeaturedDestinations from "@/components/home/FeaturedDestinations";
+import FeaturedDestinations from "@/components/home/featured-destinations/FeaturedDestinations";
 import Hero from "@/components/home/Hero";
 import Navbar from "@/components/ui/Navbar";
 
-export default function Home() {
+const Home = () => {
   return (
     <>
       <Navbar />
@@ -10,4 +10,6 @@ export default function Home() {
       <FeaturedDestinations />
     </>
   );
-}
+};
+
+export default Home;
