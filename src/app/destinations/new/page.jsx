@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 import Link from "next/link";
-import { X, Plus, Image, DollarSign, Calendar, Clock } from "lucide-react";
+import { X, Plus, Image as ImageIcon, DollarSign, Calendar, Clock, Users, Star, TrendingUp } from "lucide-react";
 
 const NewDestination = () => {
   const [isPending, setIsPending] = useState(false);
@@ -21,16 +21,56 @@ const NewDestination = () => {
     setIsPending(true);
 
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    console.log("Form data:", data);
-    setIsPending(false);
     
-    // Reset form after successful submission
-    e.currentTarget.reset();
+    // Store form reference before async operation
+    const form = e.currentTarget;
+
+    // Process form data
+    const data = {
+      destinationName: formData.get("destinationName"),
+      country: formData.get("country"),
+      city: formData.get("city"),
+      continent: formData.get("continent"),
+      category: formData.get("category"),
+      price: formData.get("price"),
+      discountPrice: formData.get("discountPrice") || null,
+      currency: formData.get("currency"),
+      rating: parseFloat(formData.get("rating")),
+      reviewsCount: parseInt(formData.get("reviewsCount")),
+      duration: formData.get("duration"),
+      departureDate: formData.get("departureDate"),
+      groupSize: formData.get("groupSize"),
+      availability: formData.get("availability"),
+      featured: formData.get("featured") === "on",
+      popular: formData.get("popular") === "on",
+      difficulty: formData.get("difficulty"),
+      bestSeason: formData.get("bestSeason"),
+      highlights: formData.get("highlights").split(",").map(h => h.trim()).filter(h => h),
+      included: formData.get("included").split(",").map(i => i.trim()).filter(i => i),
+      imageUrl: formData.get("imageUrl"),
+      description: formData.get("description"),
+    };
+
+    try {
+      // API call
+      const req = await fetch("http://localhost:5000/destinations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await req.json();
+      console.log("Response:", res);
+      console.log("Form data:", data);
+      
+      // Reset form after successful submission
+      form.reset();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   const categories = [
@@ -44,9 +84,25 @@ const NewDestination = () => {
     "Historical",
   ];
 
+  const continents = [
+    "Africa",
+    "Antarctica",
+    "Asia",
+    "Europe",
+    "North America",
+    "Oceania",
+    "South America",
+  ];
+
+  const currencies = ["USD", "EUR", "GBP", "JPY", "AUD", "CAD"];
+  
+  const availabilityOptions = ["Available", "Limited", "Sold Out"];
+  
+  const difficultyLevels = ["Easy", "Moderate", "Challenging", "Difficult"];
+
   return (
     <div className="min-h-screen bg-background py-20 md:py-24 px-4 xl:px-20">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8 sm:mb-10 md:mb-12">
           <div className="flex items-start justify-between gap-4 mb-4">
@@ -106,6 +162,37 @@ const NewDestination = () => {
                   <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
                 </TextField>
 
+                {/* City */}
+                <TextField name="city" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    City <span className="text-accent">*</span>
+                  </Label>
+                  <Input
+                    placeholder="e.g., Ubud"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                </TextField>
+
+                {/* Continent */}
+                <div>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Continent <span className="text-accent">*</span>
+                  </Label>
+                  <select
+                    name="continent"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
+                  >
+                    <option value="">Select continent</option>
+                    {continents.map((continent) => (
+                      <option key={continent} value={continent}>
+                        {continent}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Category */}
                 <div>
                   <Label className="text-sm font-semibold text-text font-body mb-2 block">
@@ -116,9 +203,7 @@ const NewDestination = () => {
                     required
                     className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
                   >
-                    <option value="" className="text-text-muted">
-                      Select category
-                    </option>
+                    <option value="">Select category</option>
                     {categories.map((category) => (
                       <option key={category} value={category}>
                         {category}
@@ -129,17 +214,17 @@ const NewDestination = () => {
               </div>
             </div>
 
-            {/* Pricing & Schedule Section */}
+            {/* Pricing Section */}
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-primary font-heading mb-4 sm:mb-6 pb-3 border-b border-border">
-                Pricing & Schedule
+                Pricing
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
                 {/* Price */}
                 <TextField name="price" type="number" isRequired>
                   <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
                     <DollarSign className="w-4 h-4 text-accent" />
-                    Price (USD) <span className="text-accent">*</span>
+                    Price <span className="text-accent">*</span>
                   </Label>
                   <Input
                     type="number"
@@ -151,6 +236,49 @@ const NewDestination = () => {
                   <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
                 </TextField>
 
+                {/* Discount Price */}
+                <TextField name="discountPrice" type="number">
+                  <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-accent" />
+                    Discount Price
+                  </Label>
+                  <Input
+                    type="number"
+                    placeholder="999"
+                    min="0"
+                    step="0.01"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                </TextField>
+
+                {/* Currency */}
+                <div>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Currency <span className="text-accent">*</span>
+                  </Label>
+                  <select
+                    name="currency"
+                    required
+                    defaultValue="USD"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
+                  >
+                    {currencies.map((currency) => (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Schedule & Details Section */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-primary font-heading mb-4 sm:mb-6 pb-3 border-b border-border">
+                Schedule & Details
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                 {/* Duration */}
                 <TextField name="duration" isRequired>
                   <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
@@ -176,6 +304,172 @@ const NewDestination = () => {
                   />
                   <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
                 </TextField>
+
+                {/* Group Size */}
+                <TextField name="groupSize" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-accent" />
+                    Group Size <span className="text-accent">*</span>
+                  </Label>
+                  <Input
+                    placeholder="2-10 People"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                </TextField>
+
+                {/* Availability */}
+                <div>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Availability <span className="text-accent">*</span>
+                  </Label>
+                  <select
+                    name="availability"
+                    required
+                    defaultValue="Available"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
+                  >
+                    {availabilityOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Difficulty */}
+                <div>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Difficulty <span className="text-accent">*</span>
+                  </Label>
+                  <select
+                    name="difficulty"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
+                  >
+                    <option value="">Select difficulty</option>
+                    {difficultyLevels.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Best Season */}
+                <TextField name="bestSeason" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Best Season <span className="text-accent">*</span>
+                  </Label>
+                  <Input
+                    placeholder="April - October"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                </TextField>
+              </div>
+            </div>
+
+            {/* Rating & Reviews Section */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-primary font-heading mb-4 sm:mb-6 pb-3 border-b border-border">
+                Rating & Reviews
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                {/* Rating */}
+                <TextField name="rating" type="number" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
+                    <Star className="w-4 h-4 text-accent" />
+                    Rating <span className="text-accent">*</span>
+                  </Label>
+                  <Input
+                    type="number"
+                    placeholder="4.8"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                </TextField>
+
+                {/* Reviews Count */}
+                <TextField name="reviewsCount" type="number" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Reviews Count <span className="text-accent">*</span>
+                  </Label>
+                  <Input
+                    type="number"
+                    placeholder="1247"
+                    min="0"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                </TextField>
+              </div>
+            </div>
+
+            {/* Features Section */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-primary font-heading mb-4 sm:mb-6 pb-3 border-b border-border">
+                Features
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                {/* Highlights */}
+                <TextField name="highlights" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    Highlights <span className="text-accent">*</span>
+                  </Label>
+                  <TextArea
+                    placeholder="Uluwatu Temple, Ubud Monkey Forest, Seminyak Beach (comma-separated)"
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all resize-none"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                  <p className="text-xs text-text-muted font-body mt-1.5">
+                    Separate items with commas
+                  </p>
+                </TextField>
+
+                {/* Included */}
+                <TextField name="included" isRequired>
+                  <Label className="text-sm font-semibold text-text font-body mb-2 block">
+                    What&apos;s Included <span className="text-accent">*</span>
+                  </Label>
+                  <TextArea
+                    placeholder="Hotel, Breakfast, Airport Pickup (comma-separated)"
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all resize-none"
+                  />
+                  <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
+                  <p className="text-xs text-text-muted font-body mt-1.5">
+                    Separate items with commas
+                  </p>
+                </TextField>
+              </div>
+
+              {/* Checkboxes */}
+              <div className="flex flex-wrap gap-6 mt-6">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    className="w-4 h-4 rounded border-border text-accent focus:ring-2 focus:ring-accent cursor-pointer"
+                  />
+                  <span className="text-sm font-medium text-text font-body">
+                    Featured Destination
+                  </span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="popular"
+                    className="w-4 h-4 rounded border-border text-accent focus:ring-2 focus:ring-accent cursor-pointer"
+                  />
+                  <span className="text-sm font-medium text-text font-body">
+                    Popular Destination
+                  </span>
+                </label>
               </div>
             </div>
 
@@ -188,12 +482,12 @@ const NewDestination = () => {
                 {/* Image URL */}
                 <TextField name="imageUrl" type="url" isRequired>
                   <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
-                    <Image className="w-4 h-4 text-accent" />
+                    <ImageIcon className="w-4 h-4 text-accent" />
                     Image URL <span className="text-accent">*</span>
                   </Label>
                   <Input
                     type="url"
-                    placeholder="https://example.com/destination-image.jpg"
+                    placeholder="https://images.unsplash.com/photo-..."
                     className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
                   />
                   <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
