@@ -1,27 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Star, Clock, TrendingUp, ArrowRight } from "lucide-react";
-
-// Fetch destinations from API
-async function getDestinations() {
-  try {
-    const res = await fetch("http://localhost:5000/destinations", {
-      cache: "no-store", // Always fetch fresh data
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch destinations");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching destinations:", error);
-    return [];
-  }
-}
+import { getAllDestinations } from "@/lib/data";
 
 const DestinationsPage = async () => {
-  const destinations = await getDestinations();
+  const destinations = await getAllDestinations();
 
   return (
     <div className="min-h-screen bg-background pt-16 md:pt-20">
