@@ -3,9 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
 
 const Navbar = () => {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -46,15 +50,37 @@ const Navbar = () => {
     { name: "Contact", href: "/contact" },
   ];
 
+  // Determine navbar background based on page and scroll state
+  const getNavbarBackground = () => {
+    if (isScrolled) {
+      return "bg-surface/80 backdrop-blur-xl shadow-lg border-b border-border/50";
+    }
+    if (isHomePage) {
+      return "bg-transparent border-b border-surface/20";
+    }
+    return "bg-surface/80 backdrop-blur-xl shadow-sm border-b border-border/50";
+  };
+
+  // Determine text color based on page and scroll state
+  const getTextColor = () => {
+    if (isScrolled || !isHomePage) {
+      return "text-text hover:text-accent";
+    }
+    return "text-surface/90 hover:text-accent";
+  };
+
+  const getBrandColor = () => {
+    if (isScrolled || !isHomePage) {
+      return "text-accent";
+    }
+    return "text-surface";
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
-      } ${
-        isScrolled
-          ? "bg-surface/80 backdrop-blur-xl shadow-lg border-b border-border/50"
-          : "bg-transparent border-b border-surface/20"
-      }`}
+      } ${getNavbarBackground()}`}
     >
       <div className="w-full px-4 xl:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -65,14 +91,13 @@ const Navbar = () => {
                 src="/assets/logo.png"
                 alt="Wanderlast Logo"
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
                 className="object-contain transition-transform group-hover:scale-105"
                 priority
               />
             </div>
             <span
-              className={`text-xl md:text-2xl font-bold font-heading transition-colors ${
-                isScrolled ? "text-accent" : "text-surface"
-              }`}
+              className={`text-xl md:text-2xl font-bold font-heading transition-colors ${getBrandColor()}`}
             >
               Wanderlast
             </span>
@@ -84,11 +109,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`font-medium font-body transition-colors relative group ${
-                  isScrolled
-                    ? "text-text hover:text-accent"
-                    : "text-surface/90 hover:text-accent"
-                }`}
+                className={`font-medium font-body transition-colors relative group ${getTextColor()}`}
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
@@ -99,22 +120,14 @@ const Navbar = () => {
           {/* Right: Auth Buttons (Desktop) */}
           <div className="hidden lg:flex items-center gap-4">
             <button
-              className={`flex items-center gap-2 px-4 py-2 font-body transition-colors ${
-                isScrolled
-                  ? "text-text hover:text-accent"
-                  : "text-surface/90 hover:text-accent"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 font-body transition-colors ${getTextColor()}`}
             >
               <User className="w-5 h-5" />
               <span className="font-medium">Profile</span>
             </button>
             <Link
               href="/login"
-              className={`px-5 py-2 font-medium font-body transition-colors ${
-                isScrolled
-                  ? "text-text hover:text-accent"
-                  : "text-surface/90 hover:text-accent"
-              }`}
+              className={`px-5 py-2 font-medium font-body transition-colors ${getTextColor()}`}
             >
               Login
             </Link>
@@ -129,11 +142,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden p-2 transition-colors ${
-              isScrolled
-                ? "text-text hover:text-accent"
-                : "text-surface/90 hover:text-accent"
-            }`}
+            className={`lg:hidden p-2 transition-colors ${getTextColor()}`}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (

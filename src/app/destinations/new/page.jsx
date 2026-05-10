@@ -101,8 +101,9 @@ const NewDestination = () => {
   const difficultyLevels = ["Easy", "Moderate", "Challenging", "Difficult"];
 
   return (
-    <div className="min-h-screen bg-background py-20 md:py-24 px-4 xl:px-20">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background pt-16 md:pt-20">
+      <div className="py-16 sm:py-20 md:py-24 px-4 xl:px-20">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8 sm:mb-10 md:mb-12">
           <div className="flex items-start justify-between gap-4 mb-4">
@@ -543,6 +544,7 @@ const NewDestination = () => {
             </Button>
           </div>
         </Form>
+        </div>
       </div>
     </div>
   );
