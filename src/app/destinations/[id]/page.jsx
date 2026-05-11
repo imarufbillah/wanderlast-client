@@ -14,6 +14,8 @@ import {
   Shield,
   Heart,
   Share2,
+  Edit,
+  Trash2,
 } from "lucide-react";
 import { getDestinationById } from "@/lib/data";
 
@@ -50,15 +52,33 @@ const DestinationDetails = async ({ params }) => {
 
   return (
     <div className="min-h-screen bg-background pt-16 md:pt-20">
-      {/* Back Button - Above Everything */}
+      {/* Top Navigation Bar */}
       <div className="px-4 xl:px-20 py-6">
-        <Link
-          href="/destinations"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-surface backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-primary font-body font-semibold border border-border hover:border-accent"
-        >
-          <ChevronLeft className="w-5 h-5" />
-          <span>Back to Destinations</span>
-        </Link>
+        <div className="flex items-center justify-between gap-4">
+          {/* Back Button */}
+          <Link
+            href="/destinations"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-surface backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-primary font-body font-semibold border border-border hover:border-accent"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span>Back to Destinations</span>
+          </Link>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/destinations/${destination._id}/edit`}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-accent font-body font-semibold border border-accent/20 hover:bg-accent/20"
+            >
+              <Edit className="w-5 h-5" />
+              <span className="hidden sm:inline">Edit</span>
+            </Link>
+            <button className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-red-500 font-body font-semibold border border-red-500/20 hover:bg-red-500/20">
+              <Trash2 className="w-5 h-5" />
+              <span className="hidden sm:inline">Delete</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Main Content - Split Layout */}
