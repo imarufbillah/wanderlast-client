@@ -93,10 +93,6 @@ const NewDestination = () => {
         return;
       }
 
-      const res = await req.json();
-      console.log("Response:", res);
-      console.log("Form data:", data);
-
       toast.success("Destination created successfully!");
 
       // Reset form after successful submission

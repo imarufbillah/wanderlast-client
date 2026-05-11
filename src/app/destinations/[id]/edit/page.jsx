@@ -55,8 +55,6 @@ const EditDestination = () => {
           const formattedDate = date.toISOString().split("T")[0];
           setDepartureDate(formattedDate);
         }
-
-        console.log(data);
       } catch (error) {
         console.error("Error fetching destination:", error);
       } finally {
@@ -68,8 +66,6 @@ const EditDestination = () => {
       fetchDestination();
     }
   }, [params.id, toast]);
-
-  console.log(destination);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -133,9 +129,6 @@ const EditDestination = () => {
         setIsPending(false);
         return;
       }
-
-      const res = await req.json();
-      console.log("Response:", res);
 
       toast.success("Destination updated successfully!");
 

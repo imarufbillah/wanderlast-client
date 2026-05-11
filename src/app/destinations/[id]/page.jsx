@@ -95,6 +95,7 @@ const DestinationDetails = async ({ params }) => {
                     src={destination.imageUrl}
                     alt={destination.destinationName}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
                     priority
                     className="object-cover"
                   />
