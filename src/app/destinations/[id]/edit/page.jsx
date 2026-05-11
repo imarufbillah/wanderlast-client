@@ -31,6 +31,7 @@ const EditDestination = () => {
   const [isPending, setIsPending] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [destination, setDestination] = useState(null);
+  const [departureDate, setDepartureDate] = useState("");
 
   // Fetch destination data
   useEffect(() => {
@@ -42,6 +43,14 @@ const EditDestination = () => {
         if (!res.ok) throw new Error("Failed to fetch destination");
         const data = await res.json();
         setDestination(data);
+        
+        // Format departure date for date input (YYYY-MM-DD)
+        if (data.departureDate) {
+          const date = new Date(data.departureDate);
+          const formattedDate = date.toISOString().split("T")[0];
+          setDepartureDate(formattedDate);
+        }
+        
         console.log(data);
       } catch (error) {
         console.error("Error fetching destination:", error);
@@ -102,7 +111,7 @@ const EditDestination = () => {
       const req = await fetch(
         `http://localhost:5000/destinations/${params.id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -347,7 +356,6 @@ const EditDestination = () => {
                     </Label>
                     <Input
                       type="number"
-                      defaultValue={destination.discountPrice || ""}
                       placeholder="999"
                       min="0"
                       step="0.01"
@@ -405,7 +413,7 @@ const EditDestination = () => {
                     name="departureDate"
                     type="date"
                     isRequired
-                    defaultValue={destination.departureDate.split("T")[0]}
+                    defaultValue={departureDate}
                   >
                     <Label className="text-sm font-semibold text-text font-body mb-2 flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-accent" />
@@ -413,6 +421,8 @@ const EditDestination = () => {
                     </Label>
                     <Input
                       type="date"
+                      value={departureDate}
+                      onChange={(e) => setDepartureDate(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
                     />
                     <FieldError className="text-xs text-red-500 mt-1.5 font-body" />
@@ -429,7 +439,6 @@ const EditDestination = () => {
                       Group Size <span className="text-accent">*</span>
                     </Label>
                     <Input
-                      defaultValue={destination.groupSize}
                       placeholder="2-10 People"
                       className="w-full px-4 py-3 rounded-xl border border-border bg-background text-text font-body placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
                     />
