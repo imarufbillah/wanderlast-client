@@ -18,6 +18,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { getDestinationById } from "@/lib/data";
+import DeleteDestination from "@/components/destination-details/DeleteDestination";
 
 const DestinationDetails = async ({ params }) => {
   const { id } = await params;
@@ -73,10 +74,7 @@ const DestinationDetails = async ({ params }) => {
               <Edit className="w-5 h-5" />
               <span className="hidden sm:inline">Edit</span>
             </Link>
-            <button className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-red-500 font-body font-semibold border border-red-500/20 hover:bg-red-500/20">
-              <Trash2 className="w-5 h-5" />
-              <span className="hidden sm:inline">Delete</span>
-            </button>
+            <DeleteDestination id={id} />
           </div>
         </div>
       </div>
@@ -97,7 +95,7 @@ const DestinationDetails = async ({ params }) => {
                     priority
                     className="object-cover"
                   />
-                  
+
                   {/* Subtle Gradient Overlay - Bottom only */}
                   <div className="absolute inset-0 bg-linear-to-t from-primary/40 via-transparent to-transparent" />
 
@@ -217,7 +215,7 @@ const DestinationDetails = async ({ params }) => {
                   <p className="text-sm font-bold text-primary font-body">
                     {new Date(destination.departureDate).toLocaleDateString(
                       "en-US",
-                      { month: "short", day: "numeric", year: "numeric" }
+                      { month: "short", day: "numeric", year: "numeric" },
                     )}
                   </p>
                 </div>
@@ -360,7 +358,9 @@ const DestinationDetails = async ({ params }) => {
                       <div className="shrink-0 w-6 h-6 bg-success/10 rounded-full flex items-center justify-center">
                         <Check className="w-4 h-4 text-success" />
                       </div>
-                      <span className="text-sm text-text font-body">{item}</span>
+                      <span className="text-sm text-text font-body">
+                        {item}
+                      </span>
                     </div>
                   ))}
                 </div>
