@@ -74,7 +74,10 @@ const DestinationDetails = async ({ params }) => {
               <Edit className="w-5 h-5" />
               <span className="hidden sm:inline">Edit</span>
             </Link>
-            <DeleteDestination id={id} />
+            <DeleteDestination
+              id={id}
+              destinationName={destination.destinationName}
+            />
           </div>
         </div>
       </div>

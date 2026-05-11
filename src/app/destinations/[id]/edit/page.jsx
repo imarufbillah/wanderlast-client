@@ -24,10 +24,12 @@ import {
   TrendingUp,
   Loader2,
 } from "lucide-react";
+import { useToast } from "@/components/ui/ToastContainer";
 
 const EditDestination = () => {
   const params = useParams();
   const router = useRouter();
+  const toast = useToast();
   const [isPending, setIsPending] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [destination, setDestination] = useState(null);
@@ -40,17 +42,20 @@ const EditDestination = () => {
         const res = await fetch(
           `http://localhost:5000/destinations/${params.id}`,
         );
-        if (!res.ok) throw new Error("Failed to fetch destination");
+        if (!res.ok) {
+          toast.error("Failed to load destination data");
+          throw new Error("Failed to fetch destination");
+        }
         const data = await res.json();
         setDestination(data);
-        
+
         // Format departure date for date input (YYYY-MM-DD)
         if (data.departureDate) {
           const date = new Date(data.departureDate);
           const formattedDate = date.toISOString().split("T")[0];
           setDepartureDate(formattedDate);
         }
-        
+
         console.log(data);
       } catch (error) {
         console.error("Error fetching destination:", error);
@@ -62,7 +67,7 @@ const EditDestination = () => {
     if (params.id) {
       fetchDestination();
     }
-  }, [params.id]);
+  }, [params.id, toast]);
 
   console.log(destination);
 
@@ -118,14 +123,32 @@ const EditDestination = () => {
           body: JSON.stringify(data),
         },
       );
+
+      if (!req.ok) {
+        const errorData = await req.json().catch(() => ({}));
+        toast.error(
+          errorData.message ||
+            "Failed to update destination. Please try again.",
+        );
+        setIsPending(false);
+        return;
+      }
+
       const res = await req.json();
       console.log("Response:", res);
 
-      // Redirect to destination details page
-      router.push(`/destinations/${params.id}`);
+      toast.success("Destination updated successfully!");
+
+      // Small delay to show toast before redirect
+      setTimeout(() => {
+        router.push(`/destinations/${params.id}`);
+        router.refresh();
+      }, 500);
     } catch (error) {
       console.error("Error updating destination:", error);
-    } finally {
+      toast.error(
+        "An error occurred while updating. Please check your connection.",
+      );
       setIsPending(false);
     }
   };
