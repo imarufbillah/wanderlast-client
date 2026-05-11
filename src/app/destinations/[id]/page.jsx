@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { getDestinationById } from "@/lib/data";
 import DeleteDestination from "@/components/destination-details/DeleteDestination";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 const DestinationDetails = async ({ params }) => {
   const { id } = await params;
@@ -53,6 +54,11 @@ const DestinationDetails = async ({ params }) => {
 
   return (
     <div className="min-h-screen bg-background pt-16 md:pt-20">
+      {/* Breadcrumbs */}
+      <div className="px-4 xl:px-20 pt-6">
+        <Breadcrumbs currentPageTitle={destination.destinationName} />
+      </div>
+
       {/* Top Navigation Bar */}
       <div className="px-4 xl:px-20 py-6">
         <div className="flex items-center justify-between gap-4">
