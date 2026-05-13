@@ -1,25 +1,56 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { useToast } from "@/components/ui/ToastContainer";
+import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 const SignInForm = () => {
+  const router = useRouter();
+  const toast = useToast();
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldError, setFieldError] = useState("");
 
   const togglePasswordVisibility = () =>
     setIsPasswordVisible(!isPasswordVisible);
 
   const handleSignIn = async (formData) => {
-    const signInData = Object.fromEntries(formData.entries());
+    setFieldError("");
+    setIsLoading(true);
 
-    const { data, error } = await authClient.signIn.email(signInData);
-    console.log(data, error);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    const { data, error } = await authClient.signIn.email({ email, password });
+
+    setIsLoading(false);
+
+    if (error) {
+      const message =
+        error.message || "Invalid email or password. Please try again.";
+      setFieldError(message);
+      toast.error(message);
+      return;
+    }
+
+    toast.success("Welcome back! Redirecting...");
+    setTimeout(() => router.push("/"), 500);
   };
 
   return (
     <form action={handleSignIn} className="space-y-5">
+      {/* Inline error banner */}
+      {fieldError && (
+        <div className="flex items-start gap-2 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 text-sm font-body animate-fade-in">
+          <span className="mt-0.5 shrink-0">⚠</span>
+          <span>{fieldError}</span>
+        </div>
+      )}
+
       {/* Email Input */}
       <div>
         <label className="block text-sm font-semibold text-text font-body mb-2">
@@ -32,7 +63,8 @@ const SignInForm = () => {
             name="email"
             placeholder="Enter your email"
             required
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            disabled={isLoading}
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           />
         </div>
       </div>
@@ -57,7 +89,8 @@ const SignInForm = () => {
             name="password"
             placeholder="Enter your password"
             required
-            className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            disabled={isLoading}
+            className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           />
           <button
             type="button"
@@ -76,9 +109,17 @@ const SignInForm = () => {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body text-base rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg"
+        disabled={isLoading}
+        className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body text-base rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none"
       >
-        Sign In
+        {isLoading ? (
+          <>
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Signing in...
+          </>
+        ) : (
+          "Sign In"
+        )}
       </button>
     </form>
   );

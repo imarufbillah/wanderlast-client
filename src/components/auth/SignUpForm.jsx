@@ -1,14 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { useToast } from "@/components/ui/ToastContainer";
+import { Eye, EyeOff, Mail, Lock, User, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const toast = useToast();
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const togglePasswordVisibility = () =>
     setIsPasswordVisible(!isPasswordVisible);
@@ -16,14 +23,58 @@ const SignUpForm = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
 
   const handleSignUp = async (formData) => {
-    const signUpData = Object.fromEntries(formData.entries());
+    setFieldErrors({});
+    setIsLoading(true);
 
-    const { data, error } = await authClient.signUp.email(signUpData);
-    console.log(data, error);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
+
+    // Client-side validation
+    const errors = {};
+    if (password.length < 8) {
+      errors.password = "Password must be at least 8 characters.";
+    }
+    if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setIsLoading(false);
+      return;
+    }
+
+    const { data, error } = await authClient.signUp.email({
+      name,
+      email,
+      password,
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      const message =
+        error.message || "Something went wrong. Please try again.";
+      setFieldErrors({ general: message });
+      toast.error(message);
+      return;
+    }
+
+    toast.success("Account created! Welcome to WanderLast.");
+    setTimeout(() => router.push("/"), 500);
   };
 
   return (
     <form action={handleSignUp} className="space-y-5">
+      {/* General error banner */}
+      {fieldErrors.general && (
+        <div className="flex items-start gap-2 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 text-sm font-body animate-fade-in">
+          <span className="mt-0.5 shrink-0">⚠</span>
+          <span>{fieldErrors.general}</span>
+        </div>
+      )}
+
       {/* Name Input */}
       <div>
         <label className="block text-sm font-semibold text-text font-body mb-2">
@@ -36,7 +87,8 @@ const SignUpForm = () => {
             name="name"
             placeholder="Enter your full name"
             required
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            disabled={isLoading}
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           />
         </div>
       </div>
@@ -53,7 +105,8 @@ const SignUpForm = () => {
             name="email"
             placeholder="Enter your email"
             required
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            disabled={isLoading}
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           />
         </div>
       </div>
@@ -68,9 +121,12 @@ const SignUpForm = () => {
           <input
             type={isPasswordVisible ? "text" : "password"}
             name="password"
-            placeholder="Create a password"
+            placeholder="Create a password (min. 8 characters)"
             required
-            className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            disabled={isLoading}
+            className={`w-full pl-10 pr-12 py-3 rounded-xl border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed ${
+              fieldErrors.password ? "border-red-500" : "border-border"
+            }`}
           />
           <button
             type="button"
@@ -84,6 +140,11 @@ const SignUpForm = () => {
             )}
           </button>
         </div>
+        {fieldErrors.password && (
+          <p className="mt-1.5 text-xs text-red-500 font-body animate-fade-in">
+            {fieldErrors.password}
+          </p>
+        )}
       </div>
 
       {/* Confirm Password Input */}
@@ -98,7 +159,10 @@ const SignUpForm = () => {
             name="confirmPassword"
             placeholder="Re-enter your password"
             required
-            className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            disabled={isLoading}
+            className={`w-full pl-10 pr-12 py-3 rounded-xl border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed ${
+              fieldErrors.confirmPassword ? "border-red-500" : "border-border"
+            }`}
           />
           <button
             type="button"
@@ -112,6 +176,11 @@ const SignUpForm = () => {
             )}
           </button>
         </div>
+        {fieldErrors.confirmPassword && (
+          <p className="mt-1.5 text-xs text-red-500 font-body animate-fade-in">
+            {fieldErrors.confirmPassword}
+          </p>
+        )}
       </div>
 
       {/* Terms & Conditions */}
@@ -135,9 +204,17 @@ const SignUpForm = () => {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body text-base rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg"
+        disabled={isLoading}
+        className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body text-base rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none"
       >
-        Create Account
+        {isLoading ? (
+          <>
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Creating account...
+          </>
+        ) : (
+          "Create Account"
+        )}
       </button>
     </form>
   );

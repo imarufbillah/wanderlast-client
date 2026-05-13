@@ -1,24 +1,48 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { useToast } from "@/components/ui/ToastContainer";
+import { Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 
 const GoogleAuth = ({ label = "Sign up with Google" }) => {
-  const handleGoogleSignUp = () => {
-    const { data, error } = authClient.signIn.social({
+  const router = useRouter();
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGoogleAuth = async () => {
+    setIsLoading(true);
+
+    const { data, error } = await authClient.signIn.social({
       provider: "google",
+      callbackURL: "/",
     });
-    console.log(data, error);
+
+    if (error) {
+      setIsLoading(false);
+      toast.error(error.message || "Google sign-in failed. Please try again.");
+      return;
+    }
+
+    // callbackURL handles the redirect; keep spinner until navigation
+    toast.success("Redirecting to Google...");
   };
 
   return (
     <button
       type="button"
-      onClick={handleGoogleSignUp}
-      className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-surface border-2 border-border rounded-xl hover:bg-background transition-all font-body font-semibold text-text"
+      onClick={handleGoogleAuth}
+      disabled={isLoading}
+      className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-surface border-2 border-border rounded-xl hover:bg-background transition-all font-body font-semibold text-text disabled:opacity-60 disabled:cursor-not-allowed"
     >
-      <FcGoogle className="w-5 h-5" />
-      {label}
+      {isLoading ? (
+        <Loader2 className="w-5 h-5 animate-spin text-text-muted" />
+      ) : (
+        <FcGoogle className="w-5 h-5" />
+      )}
+      {isLoading ? "Redirecting..." : label}
     </button>
   );
 };
