@@ -1,8 +1,8 @@
 import Link from "next/link";
 import GoogleAuth from "@/components/auth/GoogleAuth";
-import SignUpForm from "@/components/auth/SignUpForm";
+import SignInForm from "@/components/auth/SignInForm";
 
-const SignUpPage = () => {
+const SignInPage = () => {
   return (
     <div className="min-h-screen bg-background pt-16 md:pt-20">
       <div className="flex items-center justify-center px-4 py-12">
@@ -10,17 +10,17 @@ const SignUpPage = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary font-heading mb-3">
-              Create Account
+              Welcome Back
             </h1>
             <p className="text-text-muted font-body">
-              Join WanderLast and start your adventure
+              Sign in to continue your adventure
             </p>
           </div>
 
-          {/* Sign Up Card */}
+          {/* Sign In Card */}
           <div className="bg-surface rounded-3xl shadow-xl border border-border p-8">
-            {/* Google Sign Up Button */}
-            <GoogleAuth />
+            {/* Google Sign In Button */}
+            <GoogleAuth label="Sign in with Google" />
 
             {/* Divider */}
             <div className="relative my-6">
@@ -29,22 +29,22 @@ const SignUpPage = () => {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-4 bg-surface text-text-muted font-body">
-                  Or sign up with email
+                  Or sign in with email
                 </span>
               </div>
             </div>
 
-            {/* Sign Up Form */}
-            <SignUpForm />
+            {/* Sign In Form */}
+            <SignInForm />
 
-            {/* Sign In Link */}
+            {/* Sign Up Link */}
             <p className="text-center text-sm text-text-muted font-body mt-6">
-              Already have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
-                href="/signin"
+                href="/signup"
                 className="text-accent hover:underline font-semibold"
               >
-                Sign in
+                Create one
               </Link>
             </p>
           </div>
@@ -54,4 +54,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignInPage;

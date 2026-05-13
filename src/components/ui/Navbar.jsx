@@ -136,7 +136,7 @@ const Navbar = () => {
               <span className="font-medium">Profile</span>
             </button>
             <Link
-              href="/login"
+              href="/signin"
               className={`px-5 py-2 font-medium font-body transition-colors ${getTextColor()}`}
             >
               Login
@@ -194,7 +194,7 @@ const Navbar = () => {
                 <span className="font-medium">Profile</span>
               </button>
               <Link
-                href="/login"
+                href="/signin"
                 className="block w-full text-center px-4 py-2 text-text hover:bg-background rounded-lg transition-colors font-medium font-body"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
