@@ -7,7 +7,7 @@ import ActiveFilters from "./ActiveFilters";
 import DestinationsGrid from "./DestinationsGrid";
 import EmptyState from "./EmptyState";
 
-const DestinationsClient = ({ initialDestinations }) => {
+const DestinationsClient = ({ initialDestinations, categories, continents }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [continentFilter, setContinentFilter] = useState("all");
@@ -136,6 +136,8 @@ const DestinationsClient = ({ initialDestinations }) => {
             setPriceRange={setPriceRange}
             sortBy={sortBy}
             setSortBy={setSortBy}
+            categories={categories}
+            continents={continents}
           />
 
           <ActiveFilters

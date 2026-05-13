@@ -3,6 +3,23 @@
 import { Tag, Globe, DollarSign, ArrowUpDown } from "lucide-react";
 import CustomSelect from "@/components/ui/CustomSelect";
 
+const priceOptions = [
+  { value: "all", label: "All Prices" },
+  { value: "0-500", label: "$0 - $500" },
+  { value: "500-1000", label: "$500 - $1,000" },
+  { value: "1000-2000", label: "$1,000 - $2,000" },
+  { value: "2000+", label: "$2,000+" },
+];
+
+const sortOptions = [
+  { value: "default", label: "Default" },
+  { value: "featured", label: "Featured First" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "rating", label: "Highest Rated" },
+  { value: "name", label: "Name (A-Z)" },
+];
+
 const FilterBar = ({
   categoryFilter,
   setCategoryFilter,
@@ -12,45 +29,17 @@ const FilterBar = ({
   setPriceRange,
   sortBy,
   setSortBy,
+  categories = [],
+  continents = [],
 }) => {
   const categoryOptions = [
     { value: "all", label: "All Categories" },
-    { value: "Beach", label: "Beach" },
-    { value: "Mountain", label: "Mountain" },
-    { value: "City", label: "City" },
-    { value: "Adventure", label: "Adventure" },
-    { value: "Cultural", label: "Cultural" },
-    { value: "Luxury", label: "Luxury" },
-    { value: "Wildlife", label: "Wildlife" },
-    { value: "Historical", label: "Historical" },
+    ...categories.map((c) => ({ value: c, label: c })),
   ];
 
   const continentOptions = [
     { value: "all", label: "All Continents" },
-    { value: "Africa", label: "Africa" },
-    { value: "Antarctica", label: "Antarctica" },
-    { value: "Asia", label: "Asia" },
-    { value: "Europe", label: "Europe" },
-    { value: "North America", label: "North America" },
-    { value: "Oceania", label: "Oceania" },
-    { value: "South America", label: "South America" },
-  ];
-
-  const priceOptions = [
-    { value: "all", label: "All Prices" },
-    { value: "0-500", label: "$0 - $500" },
-    { value: "500-1000", label: "$500 - $1,000" },
-    { value: "1000-2000", label: "$1,000 - $2,000" },
-    { value: "2000+", label: "$2,000+" },
-  ];
-
-  const sortOptions = [
-    { value: "default", label: "Default" },
-    { value: "featured", label: "Featured First" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "rating", label: "Highest Rated" },
-    { value: "name", label: "Name (A-Z)" },
+    ...continents.map((c) => ({ value: c, label: c })),
   ];
 
   return (
