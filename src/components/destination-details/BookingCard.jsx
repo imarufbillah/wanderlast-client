@@ -11,6 +11,12 @@ const BookingCard = ({
   discountPercent,
   departureDate,
 }) => {
+  const handleBooking = (formData) => {
+    const travelers = formData.get("travelers");
+    const departureDate = formData.get("departureDate");
+    console.log({ travelers, departureDate });
+  };
+
   return (
     <div className="p-6 sm:p-8 bg-linear-to-br from-accent/5 to-accent-soft/5 rounded-3xl border-2 border-accent/20 shadow-xl">
       {/* Price Section */}
@@ -39,17 +45,20 @@ const BookingCard = ({
       </div>
 
       {/* Booking Form */}
-      <div className="space-y-4 mb-6">
+      <form action={handleBooking} className="space-y-4 mb-6">
         <div>
           <label className="block text-sm font-semibold text-text font-body mb-2">
             Number of Travelers
           </label>
-          <select className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer">
-            <option>1 Person</option>
-            <option>2 People</option>
-            <option>3 People</option>
-            <option>4 People</option>
-            <option>5+ People</option>
+          <select
+            name="travelers"
+            className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
+          >
+            <option value="1">1 Person</option>
+            <option value="2">2 People</option>
+            <option value="3">3 People</option>
+            <option value="4">4 People</option>
+            <option value="5+">5+ People</option>
           </select>
         </div>
 
@@ -59,16 +68,24 @@ const BookingCard = ({
           </label>
           <input
             type="date"
-            defaultValue={departureDate.split("T")[0]}
+            name="departureDate"
+            defaultValue={
+              departureDate
+                ? new Date(departureDate).toISOString().split("T")[0]
+                : ""
+            }
             className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
           />
         </div>
-      </div>
 
-      {/* Book Button */}
-      <button className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg mb-6 text-lg">
-        Book Now
-      </button>
+        {/* Book Button */}
+        <button
+          type="submit"
+          className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg text-lg"
+        >
+          Book Now
+        </button>
+      </form>
 
       {/* Trust Badges */}
       <div className="space-y-3 pt-6 border-t border-accent/20">
