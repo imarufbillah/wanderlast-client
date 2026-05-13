@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { User, Phone, Globe, FileText, Loader2, Check } from "lucide-react";
 import { useToast } from "@/components/ui/ToastContainer";
+import { authClient } from "@/lib/auth-client";
 
 const inputClass =
   "w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-text font-body text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed placeholder:text-text-muted/60";
@@ -40,10 +41,22 @@ const EditProfileForm = ({ user }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Placeholder — wire to your profile update API when ready
-    await new Promise((r) => setTimeout(r, 900));
+    const { error } = await authClient.updateUser({
+      name: form.name,
+      phone: form.phone,
+      nationality: form.nationality,
+      bio: form.bio,
+    });
 
     setIsLoading(false);
+
+    if (error) {
+      toast.error(
+        error.message ?? "Failed to update profile. Please try again.",
+      );
+      return;
+    }
+
     setSaved(true);
     toast.success("Profile updated successfully.");
   };

@@ -21,6 +21,13 @@ const ProfilePage = async () => {
 
   const user = session.user;
 
+  // Check if user has a credential (email/password) account
+  // Google-only users won't have one, so we hide the change password option
+  const accounts = await auth.api.listUserAccounts({
+    headers: await headers(),
+  });
+  const hasPassword = accounts.some((acc) => acc.providerId === "credential");
+
   // Placeholder stats — replace with real DB queries when bookings API is ready
   const stats = {
     totalBookings: 0,
@@ -40,7 +47,7 @@ const ProfilePage = async () => {
           {/* Left column — edit form + account */}
           <div className="lg:col-span-1 space-y-6">
             <EditProfileForm user={user} />
-            <AccountInfo user={user} />
+            <AccountInfo user={user} hasPassword={hasPassword} />
           </div>
 
           {/* Right column — stats + activity */}

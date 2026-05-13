@@ -15,6 +15,28 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
   },
+  user: {
+    additionalFields: {
+      phone: {
+        type: "string",
+        required: false,
+        defaultValue: "",
+        input: true,
+      },
+      nationality: {
+        type: "string",
+        required: false,
+        defaultValue: "",
+        input: true,
+      },
+      bio: {
+        type: "string",
+        required: false,
+        defaultValue: "",
+        input: true,
+      },
+    },
+  },
   database: mongodbAdapter(db, {
     client,
   }),
