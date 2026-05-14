@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { TrendingUp, Shield, Check, Award } from "lucide-react";
 
 const BookingCard = ({
@@ -10,11 +11,38 @@ const BookingCard = ({
   savings,
   discountPercent,
   departureDate,
+  destination,
 }) => {
-  const handleBooking = (formData) => {
+  const { data: session } = authClient.useSession();
+
+  const handleBooking = async (formData) => {
     const travelers = formData.get("travelers");
     const departureDate = formData.get("departureDate");
-    console.log({ travelers, departureDate });
+    const userId = session?.user?.id;
+    const userName = session?.user?.name;
+    const userEmail = session?.user?.email;
+    const destinationId = destination._id;
+    const destinationName = destination.destinationName;
+    const destinationImage = destination.imageUrl;
+
+    const data = {
+      travelers,
+      departureDate,
+      userId,
+      userName,
+      userEmail,
+      destinationId,
+      destinationName,
+      destinationImage,
+    };
+
+    const req = await fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
   };
 
   return (

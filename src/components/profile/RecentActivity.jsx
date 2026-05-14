@@ -1,60 +1,57 @@
 import Link from "next/link";
 import { MapPin, Clock, ArrowRight, Compass } from "lucide-react";
 
-// Placeholder activity items — replace with real booking data when API is ready
-const MOCK_ACTIVITY = [
-  {
-    id: 1,
-    type: "booking",
-    destination: "Santorini, Greece",
-    date: "May 2, 2026",
-    status: "Upcoming",
-    statusColor: "text-accent bg-accent/10",
-  },
-  {
-    id: 2,
-    type: "booking",
-    destination: "Bali, Indonesia",
-    date: "Mar 15, 2026",
-    status: "Completed",
-    statusColor: "text-success bg-success/10",
-  },
-  {
-    id: 3,
-    type: "booking",
-    destination: "Kyoto, Japan",
-    date: "Jan 8, 2026",
-    status: "Completed",
-    statusColor: "text-success bg-success/10",
-  },
-];
+const STATUS_STYLES = {
+  upcoming: "text-accent bg-accent/10",
+  completed: "text-success bg-success/10",
+  cancelled: "text-red-500 bg-red-50",
+};
 
-const ActivityRow = ({ item }) => (
-  <div className="flex items-center justify-between gap-4 py-4 border-b border-border last:border-0">
-    <div className="flex items-center gap-3 min-w-0">
-      <div className="w-9 h-9 rounded-xl bg-background flex items-center justify-center shrink-0">
-        <MapPin className="w-4 h-4 text-accent" />
+const ActivityRow = ({ booking }) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const departure = new Date(booking.departureDate);
+  const status =
+    booking.status ?? (departure >= today ? "upcoming" : "completed");
+
+  const formattedDate = booking.departureDate
+    ? new Date(booking.departureDate).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "—";
+
+  return (
+    <div className="flex items-center justify-between gap-4 py-4 border-b border-border last:border-0">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="w-9 h-9 rounded-xl bg-background flex items-center justify-center shrink-0">
+          <MapPin className="w-4 h-4 text-accent" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold font-body text-text truncate">
+            {booking.destinationName}
+          </p>
+          <p className="text-xs text-text-muted font-body flex items-center gap-1 mt-0.5">
+            <Clock className="w-3 h-3" />
+            {formattedDate}
+          </p>
+        </div>
       </div>
-      <div className="min-w-0">
-        <p className="text-sm font-semibold font-body text-text truncate">
-          {item.destination}
-        </p>
-        <p className="text-xs text-text-muted font-body flex items-center gap-1 mt-0.5">
-          <Clock className="w-3 h-3" />
-          {item.date}
-        </p>
-      </div>
+      <span
+        className={`shrink-0 text-xs font-semibold font-body px-2.5 py-1 rounded-full capitalize ${
+          STATUS_STYLES[status] ?? STATUS_STYLES.upcoming
+        }`}
+      >
+        {status}
+      </span>
     </div>
-    <span
-      className={`shrink-0 text-xs font-semibold font-body px-2.5 py-1 rounded-full ${item.statusColor}`}
-    >
-      {item.status}
-    </span>
-  </div>
-);
+  );
+};
 
-const RecentActivity = ({ isEmpty = false }) => {
-  const items = isEmpty ? [] : MOCK_ACTIVITY;
+// Shows the 3 most recent bookings; receives real data from the profile page
+const RecentActivity = ({ bookings = [] }) => {
+  const recent = bookings.slice(0, 3);
 
   return (
     <div className="bg-surface rounded-3xl border border-border p-6 sm:p-8">
@@ -62,7 +59,7 @@ const RecentActivity = ({ isEmpty = false }) => {
         <h2 className="text-lg font-bold font-heading text-text">
           Recent Activity
         </h2>
-        {items.length > 0 && (
+        {recent.length > 0 && (
           <Link
             href="/bookings"
             className="text-sm text-accent font-semibold font-body flex items-center gap-1 hover:gap-2 transition-all"
@@ -72,7 +69,7 @@ const RecentActivity = ({ isEmpty = false }) => {
         )}
       </div>
 
-      {items.length === 0 ? (
+      {recent.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <div className="w-14 h-14 rounded-2xl bg-background flex items-center justify-center mb-4">
             <Compass className="w-7 h-7 text-text-muted" />
@@ -91,8 +88,8 @@ const RecentActivity = ({ isEmpty = false }) => {
         </div>
       ) : (
         <div>
-          {items.map((item) => (
-            <ActivityRow key={item.id} item={item} />
+          {recent.map((booking) => (
+            <ActivityRow key={booking._id} booking={booking} />
           ))}
         </div>
       )}

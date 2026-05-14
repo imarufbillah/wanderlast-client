@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, User, MapPin, LogOut } from "lucide-react";
+import { ChevronDown, User, MapPin, Luggage, LogOut } from "lucide-react";
 import UserAvatar from "./UserAvatar";
 
 const UserDropdown = ({
@@ -92,6 +92,14 @@ const UserDropdown = ({
             >
               <User className="w-4 h-4 shrink-0" />
               My Profile
+            </Link>
+            <Link
+              href="/bookings"
+              onClick={onClose}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm font-body text-text hover:bg-background hover:text-accent transition-colors"
+            >
+              <Luggage className="w-4 h-4 shrink-0" />
+              My Bookings
             </Link>
             <Link
               href="/destinations"

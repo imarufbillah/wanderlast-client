@@ -84,6 +84,7 @@ const DestinationDetails = async ({ params }) => {
                 savings={savings}
                 discountPercent={discountPercent}
                 departureDate={destination.departureDate}
+                destination={destination}
               />
 
               <HighlightsSection highlights={destination.highlights} />

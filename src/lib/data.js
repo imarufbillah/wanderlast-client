@@ -1,7 +1,24 @@
+export const getBookingsByUserId = async (userId) => {
+  try {
+    const res = await fetch(`http://localhost:5000/bookings/${userId}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch bookings");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    return [];
+  }
+};
+
 export const getAllDestinations = async () => {
   try {
     const res = await fetch("http://localhost:5000/destinations", {
-      cache: "no-store", // Always fetch fresh data
+      cache: "no-store",
     });
 
     if (!res.ok) {
@@ -17,12 +34,7 @@ export const getAllDestinations = async () => {
 
 export const getFeaturedDestinations = async () => {
   const allDestinations = await getAllDestinations();
-
-  const featuredDestinations = allDestinations.filter(
-    (d) => d.featured === true,
-  );
-
-  return featuredDestinations;
+  return allDestinations.filter((d) => d.featured === true);
 };
 
 export const getDestinationById = async (id) => {
@@ -53,9 +65,7 @@ export const getAllCategories = async () => {
     }
 
     const data = await res.json();
-    const categories = [...new Set(data.map((d) => d.category))].filter(
-      Boolean,
-    );
+    const categories = [...new Set(data.map((d) => d.category))].filter(Boolean);
     return categories;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -74,7 +84,6 @@ export const getAllCountries = async () => {
     }
 
     const data = await res.json();
-    // Extract unique countries from the destinations
     const countries = [...new Set(data.map((d) => d.country))];
     return countries;
   } catch (error) {
@@ -94,7 +103,6 @@ export const getAllContinents = async () => {
     }
 
     const data = await res.json();
-    // Extract unique continents from the destinations
     const continents = [...new Set(data.map((d) => d.continent))];
     return continents;
   } catch (error) {

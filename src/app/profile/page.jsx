@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { getBookingsByUserId } from "@/lib/data";
 import ProfileHero from "@/components/profile/ProfileHero";
 import TravelStats from "@/components/profile/TravelStats";
 import EditProfileForm from "@/components/profile/EditProfileForm";
@@ -21,19 +22,28 @@ const ProfilePage = async () => {
 
   const user = session.user;
 
-  // Check if user has a credential (email/password) account
-  // Google-only users won't have one, so we hide the change password option
-  const accounts = await auth.api.listUserAccounts({
-    headers: await headers(),
-  });
+  // Fetch bookings and accounts in parallel
+  const [bookings, accounts] = await Promise.all([
+    getBookingsByUserId(session.user.id),
+    auth.api.listUserAccounts({ headers: await headers() }),
+  ]);
   const hasPassword = accounts.some((acc) => acc.providerId === "credential");
 
-  // Placeholder stats — replace with real DB queries when bookings API is ready
+  // Derive stats from real booking data
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const completedBookings = bookings.filter(
+    (b) => new Date(b.departureDate) < today
+  );
+  const countriesVisited = new Set(
+    completedBookings.map((b) => b.destinationName)
+  ).size;
+
   const stats = {
-    totalBookings: 0,
-    countriesVisited: 0,
-    destinationsExplored: 0,
-    tripsPlanned: 0,
+    totalBookings: bookings.length,
+    countriesVisited,
+    destinationsExplored: completedBookings.length,
+    tripsPlanned: bookings.filter((b) => new Date(b.departureDate) >= today).length,
   };
 
   return (
@@ -53,7 +63,7 @@ const ProfilePage = async () => {
           {/* Right column — stats + activity */}
           <div className="lg:col-span-2 space-y-6">
             <TravelStats stats={stats} />
-            <RecentActivity />
+            <RecentActivity bookings={bookings} />
           </div>
         </div>
       </div>
