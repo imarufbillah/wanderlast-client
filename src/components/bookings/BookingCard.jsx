@@ -109,7 +109,7 @@ const BookingCard = ({ booking, onCancelled }) => {
           <div className="flex items-center gap-3 mt-5 pt-4 border-t border-border">
             <Link
               href={`/destinations/${booking.destinationId}`}
-              className="flex items-center gap-1.5 text-sm font-semibold font-body text-accent hover:text-accent-soft transition-colors"
+              className="flex items-center gap-1.5 text-sm font-semibold font-body text-accent hover:text-accent-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-lg"
             >
               View destination
               <ArrowRight className="w-3.5 h-3.5" />
@@ -119,7 +119,7 @@ const BookingCard = ({ booking, onCancelled }) => {
               <button
                 onClick={handleCancel}
                 disabled={isCancelling}
-                className="ml-auto flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold font-body text-red-500 border border-red-200 hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="ml-auto flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold font-body text-red-500 border border-red-200 hover:bg-red-50 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2"
               >
                 {isCancelling ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />

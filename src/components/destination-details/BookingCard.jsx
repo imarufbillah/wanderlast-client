@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { TrendingUp, Shield, Check, Award } from "lucide-react";
+import { useToast } from "@/components/ui/ToastContainer";
+import { TrendingUp, Shield, Check, Award, Loader2 } from "lucide-react";
 
 const BookingCard = ({
   price,
@@ -13,36 +16,46 @@ const BookingCard = ({
   departureDate,
   destination,
 }) => {
+  const router = useRouter();
+  const toast = useToast();
   const { data: session } = authClient.useSession();
+  const [isBooking, setIsBooking] = useState(false);
 
   const handleBooking = async (formData) => {
-    const travelers = formData.get("travelers");
-    const departureDate = formData.get("departureDate");
-    const userId = session?.user?.id;
-    const userName = session?.user?.name;
-    const userEmail = session?.user?.email;
-    const destinationId = destination._id;
-    const destinationName = destination.destinationName;
-    const destinationImage = destination.imageUrl;
+    if (!session?.user) {
+      toast.error("Please sign in to book a destination.");
+      router.push("/signin");
+      return;
+    }
+
+    setIsBooking(true);
 
     const data = {
-      travelers,
-      departureDate,
-      userId,
-      userName,
-      userEmail,
-      destinationId,
-      destinationName,
-      destinationImage,
+      travelers: formData.get("travelers"),
+      departureDate: formData.get("departureDate"),
+      userId: session.user.id,
+      userName: session.user.name,
+      userEmail: session.user.email,
+      destinationId: destination._id,
+      destinationName: destination.destinationName,
+      destinationImage: destination.imageUrl,
     };
 
-    const req = await fetch("http://localhost:5000/bookings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Booking failed");
+
+      toast.success(`${destination.destinationName} booked! Check My Bookings for details.`);
+    } catch {
+      toast.error("Could not complete booking. Please try again.");
+    } finally {
+      setIsBooking(false);
+    }
   };
 
   return (
@@ -80,7 +93,7 @@ const BookingCard = ({
           </label>
           <select
             name="travelers"
-            className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all cursor-pointer"
+            className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:border-transparent transition-all cursor-pointer"
           >
             <option value="1">1 Person</option>
             <option value="2">2 People</option>
@@ -102,16 +115,24 @@ const BookingCard = ({
                 ? new Date(departureDate).toISOString().split("T")[0]
                 : ""
             }
-            className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+            className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-text font-body focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:border-transparent transition-all"
           />
         </div>
 
         {/* Book Button */}
         <button
           type="submit"
-          className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg text-lg"
+          disabled={isBooking}
+          className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-primary font-bold font-body rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] active:scale-[0.98] transition-all shadow-lg text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
         >
-          Book Now
+          {isBooking ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Booking…
+            </>
+          ) : (
+            "Book Now"
+          )}
         </button>
       </form>
 

@@ -1,14 +1,11 @@
-import { Loader2 } from "lucide-react";
+import DestinationsGridSkeleton from "./DestinationCardSkeleton";
 
-const LoadingState = () => {
-  return (
-    <div className="flex items-center justify-center py-20">
-      <div className="text-center">
-        <Loader2 className="w-12 h-12 text-accent animate-spin mx-auto mb-4" />
-        <p className="text-text-muted font-body">Loading destinations...</p>
-      </div>
-    </div>
-  );
-};
+// Used as the Suspense fallback inside DestinationsPage
+const LoadingState = () => (
+  <div className="px-4 xl:px-20 pb-20">
+    <div className="h-5 w-32 bg-border rounded-lg animate-pulse mb-8" />
+    <DestinationsGridSkeleton count={6} />
+  </div>
+);
 
 export default LoadingState;

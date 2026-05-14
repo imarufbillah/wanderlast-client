@@ -142,7 +142,7 @@ const EditProfileForm = ({ user }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3.5 bg-linear-to-r from-accent to-accent-soft text-primary font-bold font-body rounded-xl hover:shadow-[0_0_24px_rgba(19,218,233,0.35)] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none"
+          className="w-full py-3.5 bg-linear-to-r from-accent to-accent-soft text-primary font-bold font-body rounded-xl hover:shadow-[0_0_24px_rgba(19,218,233,0.35)] active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           {isLoading ? (
             <>

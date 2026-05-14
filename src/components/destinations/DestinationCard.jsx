@@ -6,7 +6,7 @@ const DestinationCard = ({ destination }) => {
   return (
     <Link
       href={`/destinations/${destination._id}`}
-      className="group relative bg-surface rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+      className="group relative bg-surface rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 active:scale-[0.98]"
     >
       {/* Image Container */}
       <div className="relative aspect-4/5 overflow-hidden">

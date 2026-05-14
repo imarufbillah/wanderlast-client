@@ -159,7 +159,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-text-muted hover:text-text hover:bg-background transition-colors"
+            className="p-2 rounded-xl text-text-muted hover:text-text hover:bg-background active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -223,14 +223,14 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="flex-1 py-3 rounded-xl border border-border text-text font-semibold font-body text-sm hover:bg-background transition-colors disabled:opacity-50"
+              className="flex-1 py-3 rounded-xl border border-border text-text font-semibold font-body text-sm hover:bg-background active:scale-95 transition-all disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 py-3 bg-linear-to-r from-accent to-accent-soft text-primary font-bold font-body text-sm rounded-xl hover:shadow-[0_0_20px_rgba(19,218,233,0.35)] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none"
+              className="flex-1 py-3 bg-linear-to-r from-accent to-accent-soft text-primary font-bold font-body text-sm rounded-xl hover:shadow-[0_0_20px_rgba(19,218,233,0.35)] active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               {isLoading ? (
                 <>
