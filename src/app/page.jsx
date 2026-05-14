@@ -2,6 +2,7 @@ import FeaturedDestinations from "@/components/home/featured-destinations/Featur
 import Hero from "@/components/home/Hero";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
+import CTASection from "@/components/home/CTASection";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <FeaturedDestinations />
       <WhyChooseUs />
       <Testimonials />
+      <CTASection />
     </>
   );
 };
