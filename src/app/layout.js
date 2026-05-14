@@ -1,6 +1,7 @@
 import { Inter, Sora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
 import { ToastProvider } from "@/components/ui/ToastContainer";
 
 const sora = Sora({
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <ToastProvider>
           <Navbar />
           <main>{children}</main>
+          <Footer />
         </ToastProvider>
       </body>
     </html>
