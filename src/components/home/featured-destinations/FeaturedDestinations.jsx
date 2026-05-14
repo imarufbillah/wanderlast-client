@@ -22,7 +22,7 @@ const FeaturedDestinations = async () => {
 
         <Link
           href="/destinations"
-          className="group flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-surface font-semibold font-body rounded-full hover:bg-accent-soft transition-all shadow-md hover:shadow-lg hover:scale-105 w-fit text-sm sm:text-base"
+          className="group flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-primary font-semibold font-body rounded-xl hover:bg-accent-soft active:scale-95 transition-all shadow-md hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 w-fit text-sm sm:text-base"
         >
           All Destinations
           <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />

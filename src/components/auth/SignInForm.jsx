@@ -110,7 +110,7 @@ const SignInForm = () => {
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full py-4 bg-linear-to-r from-accent to-accent-soft text-surface font-bold font-body text-base rounded-xl hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none"
+        className="w-full py-4 bg-accent text-primary font-bold font-body text-base rounded-xl hover:bg-accent-soft hover:shadow-[0_0_30px_rgba(19,218,233,0.4)] active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         {isLoading ? (
           <>

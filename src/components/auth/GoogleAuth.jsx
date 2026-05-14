@@ -35,7 +35,7 @@ const GoogleAuth = ({ label = "Sign up with Google" }) => {
       type="button"
       onClick={handleGoogleAuth}
       disabled={isLoading}
-      className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-surface border-2 border-border rounded-xl hover:bg-background transition-all font-body font-semibold text-text disabled:opacity-60 disabled:cursor-not-allowed"
+      className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-surface border border-border rounded-xl hover:bg-background active:scale-95 transition-all font-body font-semibold text-text disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       {isLoading ? (
         <Loader2 className="w-5 h-5 animate-spin text-text-muted" />

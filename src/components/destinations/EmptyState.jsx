@@ -28,7 +28,7 @@ const EmptyState = ({ hasActiveFilters, clearFilters }) => {
       {hasActiveFilters && (
         <button
           onClick={clearFilters}
-          className="px-6 py-3 bg-accent text-surface font-semibold font-body rounded-xl hover:bg-accent-soft transition-colors shadow-lg"
+          className="px-6 py-3 bg-accent text-primary font-semibold font-body rounded-xl hover:bg-accent-soft active:scale-95 transition-all shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           Clear All Filters
         </button>

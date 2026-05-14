@@ -9,7 +9,7 @@ const TopNavigationBar = ({ destinationId, destinationName }) => {
         {/* Back Button */}
         <Link
           href="/destinations"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-surface backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-primary font-body font-semibold border border-border hover:border-accent"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-surface rounded-xl shadow-sm hover:shadow-md transition-all text-primary font-body font-semibold border border-border hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           <ChevronLeft className="w-5 h-5" />
           <span>Back to Destinations</span>
@@ -19,7 +19,7 @@ const TopNavigationBar = ({ destinationId, destinationName }) => {
         <div className="flex items-center gap-3">
           <Link
             href={`/destinations/${destinationId}/edit`}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 backdrop-blur-md rounded-full shadow-lg hover:shadow-xl transition-all text-accent font-body font-semibold border border-accent/20 hover:bg-accent/20"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-xl shadow-sm hover:shadow-md transition-all text-accent font-body font-semibold border border-accent/20 hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             <Edit className="w-5 h-5" />
             <span className="hidden sm:inline">Edit</span>

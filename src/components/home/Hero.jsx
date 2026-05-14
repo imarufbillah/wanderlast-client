@@ -1,6 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Search, MapPin, Calendar, DollarSign, Users } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Calendar,
+  DollarSign,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 
 const Hero = () => {
   return (
@@ -44,13 +51,14 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 md:gap-4 px-2 sm:px-4">
               <Link
                 href="/destinations"
-                className="px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 bg-accent text-surface font-semibold font-body rounded-full hover:bg-accent-soft transition-all shadow-lg hover:shadow-xl hover:scale-105 text-xs sm:text-sm md:text-base"
+                className="group inline-flex items-center justify-center gap-2 px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 bg-accent text-primary font-semibold font-body rounded-xl hover:bg-accent-soft active:scale-95 transition-all shadow-lg hover:shadow-xl focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 text-xs sm:text-sm md:text-base"
               >
                 Explore Destinations
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/tours"
-                className="px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 bg-surface/10 backdrop-blur-sm text-surface font-semibold font-body rounded-full border-2 border-surface/30 hover:bg-surface/20 transition-all text-xs sm:text-sm md:text-base"
+                className="px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 bg-surface/10 backdrop-blur-sm text-surface font-semibold font-body rounded-xl border border-surface/30 hover:bg-surface/20 active:scale-95 transition-all focus-visible:ring-2 focus-visible:ring-surface focus-visible:ring-offset-2 text-xs sm:text-sm md:text-base"
               >
                 View Tours
               </Link>

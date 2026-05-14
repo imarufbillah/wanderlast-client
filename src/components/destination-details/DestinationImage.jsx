@@ -29,10 +29,10 @@ const DestinationImage = ({
 
           {/* Action Buttons - Top Right */}
           <div className="absolute top-4 right-4 flex items-center gap-3 z-10">
-            <button className="p-3 bg-surface/90 backdrop-blur-md rounded-full shadow-lg hover:bg-surface hover:scale-110 transition-all text-primary">
+            <button className="p-3 bg-surface/90 backdrop-blur-md rounded-full shadow-lg hover:bg-surface hover:scale-110 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 active:scale-95 transition-all text-primary">
               <Heart className="w-5 h-5" />
             </button>
-            <button className="p-3 bg-surface/90 backdrop-blur-md rounded-full shadow-lg hover:bg-surface hover:scale-110 transition-all text-primary">
+            <button className="p-3 bg-surface/90 backdrop-blur-md rounded-full shadow-lg hover:bg-surface hover:scale-110 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 active:scale-95 transition-all text-primary">
               <Share2 className="w-5 h-5" />
             </button>
           </div>
