@@ -16,8 +16,7 @@ const BookingsPage = async () => {
     headers: await headers(),
   });
 
-  if (!session) redirect("/signin");
-
+  // Proxy ensures user is authenticated, but we still need session data
   const bookings = await getBookingsByUserId(session.user.id);
 
   return (

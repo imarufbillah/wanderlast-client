@@ -18,8 +18,7 @@ const ProfilePage = async () => {
     headers: await headers(),
   });
 
-  if (!session) redirect("/signin");
-
+  // Proxy ensures user is authenticated, but we still need session data
   const user = session.user;
 
   // Fetch bookings and accounts in parallel
@@ -33,17 +32,18 @@ const ProfilePage = async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const completedBookings = bookings.filter(
-    (b) => new Date(b.departureDate) < today
+    (b) => new Date(b.departureDate) < today,
   );
   const countriesVisited = new Set(
-    completedBookings.map((b) => b.destinationName)
+    completedBookings.map((b) => b.destinationName),
   ).size;
 
   const stats = {
     totalBookings: bookings.length,
     countriesVisited,
     destinationsExplored: completedBookings.length,
-    tripsPlanned: bookings.filter((b) => new Date(b.departureDate) >= today).length,
+    tripsPlanned: bookings.filter((b) => new Date(b.departureDate) >= today)
+      .length,
   };
 
   return (

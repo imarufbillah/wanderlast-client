@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { useToast } from "@/components/ui/ToastContainer";
 import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
@@ -9,6 +9,7 @@ import Link from "next/link";
 
 const SignInForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const toast = useToast();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -38,7 +39,10 @@ const SignInForm = () => {
     }
 
     toast.success("Welcome back! Redirecting...");
-    setTimeout(() => router.push("/"), 500);
+
+    // Get redirect URL from query params or default to home
+    const redirectTo = searchParams.get("redirect") || "/";
+    setTimeout(() => router.push(redirectTo), 500);
   };
 
   return (
