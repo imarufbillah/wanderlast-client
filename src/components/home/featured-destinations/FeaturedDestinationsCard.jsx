@@ -1,4 +1,4 @@
-import { ArrowRight, MapPin, Star, TrendingUp, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Star, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,18 +50,6 @@ const FeaturedDestinationsCard = ({ destination, visibleSlides }) => {
               </span>
             </div>
           </div>
-
-          {/* Discount Badge - Floating */}
-          {destination.discountPrice && (
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
-              <div className="flex items-center gap-1.5 px-4 py-2 bg-success backdrop-blur-md rounded-full shadow-lg animate-pulse">
-                <TrendingUp className="w-3.5 h-3.5 text-surface" />
-                <span className="text-xs font-bold text-surface font-body">
-                  Save ${destination.price - destination.discountPrice}
-                </span>
-              </div>
-            </div>
-          )}
 
           {/* Bottom Content - Enhanced Layout */}
           <div className="absolute bottom-0 left-0 right-0 p-6">
