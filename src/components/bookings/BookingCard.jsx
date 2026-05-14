@@ -3,7 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { CalendarDays, Users, MapPin, Trash2, ArrowRight, Loader2 } from "lucide-react";
+import {
+  CalendarDays,
+  Users,
+  MapPin,
+  Trash2,
+  ArrowRight,
+  Loader2,
+} from "lucide-react";
 import BookingStatusBadge from "./BookingStatusBadge";
 import { useToast } from "@/components/ui/ToastContainer";
 
@@ -24,15 +31,15 @@ const BookingCard = ({ booking, onCancelled }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const departure = new Date(booking.departureDate);
-  const status = booking.status ?? (departure >= today ? "upcoming" : "completed");
+  const status =
+    booking.status ?? (departure >= today ? "upcoming" : "completed");
 
   const handleCancel = async () => {
     setIsCancelling(true);
     try {
-      const res = await fetch(
-        `http://localhost:5000/bookings/${booking._id}`,
-        { method: "DELETE" }
-      );
+      const res = await fetch(`http://localhost:5000/bookings/${booking._id}`, {
+        method: "DELETE",
+      });
 
       if (!res.ok) throw new Error("Failed to cancel booking");
 
