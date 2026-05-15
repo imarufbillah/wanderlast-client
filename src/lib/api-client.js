@@ -155,16 +155,10 @@ export const deleteBooking = async (id) => {
 };
 
 /**
- * Fetch destination by ID (client-side with auth)
+ * Fetch destination by ID (client-side, no auth required)
  */
 export const fetchDestinationById = async (id) => {
-  const token = await getClientToken();
-
-  const res = await fetch(`${API_BASE_URL}/destinations/${id}`, {
-    headers: {
-      ...(token && { authorization: `Bearer ${token}` }),
-    },
-  });
+  const res = await fetch(`${API_BASE_URL}/destinations/${id}`);
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));

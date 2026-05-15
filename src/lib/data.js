@@ -64,13 +64,8 @@ export const getFeaturedDestinations = async () => {
 
 export const getDestinationById = async (id) => {
   try {
-    const token = await getAuthToken();
-
     const res = await fetch(`http://localhost:5000/destinations/${id}`, {
       cache: "no-store",
-      headers: {
-        ...(token && { authorization: `Bearer ${token}` }),
-      },
     });
 
     if (!res.ok) {
