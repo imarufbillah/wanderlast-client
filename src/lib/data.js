@@ -1,3 +1,5 @@
+import { auth } from "./auth";
+
 export const getBookingsByUserId = async (userId) => {
   try {
     const res = await fetch(`http://localhost:5000/bookings/${userId}`, {
@@ -38,9 +40,17 @@ export const getFeaturedDestinations = async () => {
 };
 
 export const getDestinationById = async (id) => {
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  console.log(token);
+
   try {
     const res = await fetch(`http://localhost:5000/destinations/${id}`, {
       cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!res.ok) {
@@ -65,7 +75,9 @@ export const getAllCategories = async () => {
     }
 
     const data = await res.json();
-    const categories = [...new Set(data.map((d) => d.category))].filter(Boolean);
+    const categories = [...new Set(data.map((d) => d.category))].filter(
+      Boolean,
+    );
     return categories;
   } catch (error) {
     console.error("Error fetching categories:", error);
