@@ -24,6 +24,7 @@ import {
   TrendingUp,
   Loader2,
 } from "lucide-react";
+import { fetchDestinationById, updateDestination } from "@/lib/api-client";
 import { useToast } from "@/components/ui/ToastContainer";
 
 const EditDestination = () => {
@@ -39,14 +40,7 @@ const EditDestination = () => {
   useEffect(() => {
     const fetchDestination = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:5000/destinations/${params.id}`,
-        );
-        if (!res.ok) {
-          toast.error("Failed to load destination data");
-          throw new Error("Failed to fetch destination");
-        }
-        const data = await res.json();
+        const data = await fetchDestinationById(params.id);
         setDestination(data);
 
         // Format departure date for date input (YYYY-MM-DD)
@@ -57,6 +51,7 @@ const EditDestination = () => {
         }
       } catch (error) {
         console.error("Error fetching destination:", error);
+        toast.error(error.message || "Failed to load destination data");
       } finally {
         setIsLoading(false);
       }
@@ -108,28 +103,7 @@ const EditDestination = () => {
     };
 
     try {
-      // API call to update
-      const req = await fetch(
-        `http://localhost:5000/destinations/${params.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        },
-      );
-
-      if (!req.ok) {
-        const errorData = await req.json().catch(() => ({}));
-        toast.error(
-          errorData.message ||
-            "Failed to update destination. Please try again.",
-        );
-        setIsPending(false);
-        return;
-      }
-
+      await updateDestination(params.id, data);
       toast.success("Destination updated successfully!");
 
       // Small delay to show toast before redirect
@@ -140,7 +114,7 @@ const EditDestination = () => {
     } catch (error) {
       console.error("Error updating destination:", error);
       toast.error(
-        "An error occurred while updating. Please check your connection.",
+        error.message || "Failed to update destination. Please try again.",
       );
       setIsPending(false);
     }

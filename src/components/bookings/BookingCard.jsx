@@ -12,6 +12,7 @@ import {
   Loader2,
 } from "lucide-react";
 import BookingStatusBadge from "./BookingStatusBadge";
+import { deleteBooking } from "@/lib/api-client";
 import { useToast } from "@/components/ui/ToastContainer";
 
 const BookingCard = ({ booking, onCancelled }) => {
@@ -37,16 +38,13 @@ const BookingCard = ({ booking, onCancelled }) => {
   const handleCancel = async () => {
     setIsCancelling(true);
     try {
-      const res = await fetch(`http://localhost:5000/bookings/${booking._id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Failed to cancel booking");
-
+      await deleteBooking(booking._id);
       toast.success(`Booking for ${booking.destinationName} cancelled.`);
       onCancelled(booking._id);
-    } catch {
-      toast.error("Could not cancel booking. Please try again.");
+    } catch (error) {
+      toast.error(
+        error.message || "Could not cancel booking. Please try again.",
+      );
     } finally {
       setIsCancelling(false);
     }

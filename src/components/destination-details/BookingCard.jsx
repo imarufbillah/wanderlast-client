@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { createBooking } from "@/lib/api-client";
 import { useToast } from "@/components/ui/ToastContainer";
 import { TrendingUp, Shield, Check, Award, Loader2 } from "lucide-react";
 
@@ -42,17 +43,14 @@ const BookingCard = ({
     };
 
     try {
-      const res = await fetch("http://localhost:5000/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Booking failed");
-
-      toast.success(`${destination.destinationName} booked! Check My Bookings for details.`);
-    } catch {
-      toast.error("Could not complete booking. Please try again.");
+      await createBooking(data);
+      toast.success(
+        `${destination.destinationName} booked! Check My Bookings for details.`,
+      );
+    } catch (error) {
+      toast.error(
+        error.message || "Could not complete booking. Please try again.",
+      );
     } finally {
       setIsBooking(false);
     }

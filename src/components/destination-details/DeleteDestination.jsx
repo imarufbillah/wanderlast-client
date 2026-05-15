@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { deleteDestination } from "@/lib/api-client";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 import { useToast } from "@/components/ui/ToastContainer";
 
@@ -16,30 +17,18 @@ const DeleteDestination = ({ id, destinationName }) => {
     setIsDeleting(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/destinations/${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        toast.success("Destination deleted successfully!");
-        setIsModalOpen(false);
-        // Small delay to show toast before redirect
-        setTimeout(() => {
-          router.push("/destinations");
-          router.refresh();
-        }, 500);
-      } else {
-        const errorData = await res.json().catch(() => ({}));
-        toast.error(
-          errorData.message ||
-            "Failed to delete destination. Please try again.",
-        );
-        setIsDeleting(false);
-      }
+      await deleteDestination(id);
+      toast.success("Destination deleted successfully!");
+      setIsModalOpen(false);
+      // Small delay to show toast before redirect
+      setTimeout(() => {
+        router.push("/destinations");
+        router.refresh();
+      }, 500);
     } catch (error) {
       console.error("Error deleting destination:", error);
       toast.error(
-        "An error occurred while deleting. Please check your connection.",
+        error.message || "Failed to delete destination. Please try again.",
       );
       setIsDeleting(false);
     }

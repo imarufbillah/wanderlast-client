@@ -1,9 +1,32 @@
 import { auth } from "./auth";
+import { headers } from "next/headers";
+
+/**
+ * Helper function to get JWT token from Better Auth session
+ * Returns the access token if user is authenticated
+ */
+const getAuthToken = async () => {
+  try {
+    const { token } = await auth.api.getToken({
+      headers: await headers(),
+    });
+
+    return token || null;
+  } catch (error) {
+    console.error("Error getting auth token:", error);
+    return null;
+  }
+};
 
 export const getBookingsByUserId = async (userId) => {
   try {
+    const token = await getAuthToken();
+
     const res = await fetch(`http://localhost:5000/bookings/${userId}`, {
       cache: "no-store",
+      headers: {
+        ...(token && { authorization: `Bearer ${token}` }),
+      },
     });
 
     if (!res.ok) {
@@ -40,16 +63,13 @@ export const getFeaturedDestinations = async () => {
 };
 
 export const getDestinationById = async (id) => {
-  const { token } = await auth.api.getToken({
-    headers: await headers(),
-  });
-  console.log(token);
-
   try {
+    const token = await getAuthToken();
+
     const res = await fetch(`http://localhost:5000/destinations/${id}`, {
       cache: "no-store",
       headers: {
-        Authorization: `Bearer ${token}`,
+        ...(token && { authorization: `Bearer ${token}` }),
       },
     });
 
@@ -60,7 +80,7 @@ export const getDestinationById = async (id) => {
     return res.json();
   } catch (error) {
     console.error("Error fetching destinations by ID:", error);
-    return [];
+    return null;
   }
 };
 

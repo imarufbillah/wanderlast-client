@@ -23,6 +23,7 @@ import {
   Star,
   TrendingUp,
 } from "lucide-react";
+import { createDestination } from "@/lib/api-client";
 import { useToast } from "@/components/ui/ToastContainer";
 
 const NewDestination = () => {
@@ -74,25 +75,7 @@ const NewDestination = () => {
     };
 
     try {
-      // API call
-      const req = await fetch("http://localhost:5000/destinations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!req.ok) {
-        const errorData = await req.json().catch(() => ({}));
-        toast.error(
-          errorData.message ||
-            "Failed to create destination. Please try again.",
-        );
-        setIsPending(false);
-        return;
-      }
-
+      await createDestination(data);
       toast.success("Destination created successfully!");
 
       // Reset form after successful submission
@@ -106,7 +89,7 @@ const NewDestination = () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error(
-        "An error occurred while creating. Please check your connection.",
+        error.message || "Failed to create destination. Please try again.",
       );
       setIsPending(false);
     }
