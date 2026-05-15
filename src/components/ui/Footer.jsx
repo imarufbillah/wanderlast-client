@@ -7,17 +7,28 @@ import {
   FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import NewsletterForm from "./footer/NewsletterForm";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const LINKS = {
-  explore: [
+const getExploreLinks = (isLoggedIn) => {
+  const baseLinks = [
     { label: "Destinations", href: "/destinations" },
     { label: "Tours", href: "/tours" },
     { label: "Featured Trips", href: "/destinations?filter=featured" },
-    { label: "My Bookings", href: "/bookings" },
-  ],
+  ];
+
+  // Add "My Bookings" only if user is logged in
+  if (isLoggedIn) {
+    baseLinks.push({ label: "My Bookings", href: "/bookings" });
+  }
+
+  return baseLinks;
+};
+
+const LINKS = {
   company: [
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
@@ -63,7 +74,16 @@ const FooterLinkGroup = ({ title, links }) => (
 
 // ─── Footer ──────────────────────────────────────────────────────────────────
 
-const Footer = () => {
+const Footer = async () => {
+  // Check if user is logged in
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isLoggedIn = !!session?.user;
+
+  // Get explore links based on auth status
+  const exploreLinks = getExploreLinks(isLoggedIn);
+
   return (
     <footer className="bg-primary border-t border-surface/8">
       {/* Main grid */}
@@ -114,7 +134,7 @@ const Footer = () => {
           </div>
 
           {/* Link columns */}
-          <FooterLinkGroup title="Explore" links={LINKS.explore} />
+          <FooterLinkGroup title="Explore" links={exploreLinks} />
           <FooterLinkGroup title="Company" links={LINKS.company} />
           <FooterLinkGroup title="Support" links={LINKS.support} />
         </div>
