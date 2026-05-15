@@ -3,7 +3,7 @@ import Link from "next/link";
 const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Destinations", href: "/destinations" },
-  { name: "Tours", href: "/tours" },
+  { name: "Featured", href: "/destinations?sort=featured" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];

@@ -16,8 +16,8 @@ import NewsletterForm from "./footer/NewsletterForm";
 const getExploreLinks = (isLoggedIn) => {
   const baseLinks = [
     { label: "Destinations", href: "/destinations" },
-    { label: "Tours", href: "/tours" },
     { label: "Featured Trips", href: "/destinations?filter=featured" },
+    { label: "About Us", href: "/about" },
   ];
 
   // Add "My Bookings" only if user is logged in
@@ -30,10 +30,10 @@ const getExploreLinks = (isLoggedIn) => {
 
 const LINKS = {
   company: [
-    { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
     { label: "Terms of Service", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
+    { label: "Careers", href: "/careers" },
   ],
   support: [
     { label: "Help Center", href: "/help" },

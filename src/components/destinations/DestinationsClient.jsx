@@ -1,22 +1,75 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import SearchBar from "./SearchBar";
 import FilterBar from "./FilterBar";
 import ActiveFilters from "./ActiveFilters";
 import DestinationsGrid from "./DestinationsGrid";
 import EmptyState from "./EmptyState";
 
-const DestinationsClient = ({ initialDestinations, categories, continents }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [continentFilter, setContinentFilter] = useState("all");
-  const [priceRange, setPriceRange] = useState("all");
-  const [sortBy, setSortBy] = useState("default");
+const DestinationsClient = ({
+  initialDestinations,
+  categories,
+  continents,
+}) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Initialize state from URL params
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || "",
+  );
+  const [categoryFilter, setCategoryFilter] = useState(
+    searchParams.get("category") || "all",
+  );
+  const [continentFilter, setContinentFilter] = useState(
+    searchParams.get("continent") || "all",
+  );
+  const [priceRange, setPriceRange] = useState(
+    searchParams.get("price") || "all",
+  );
+  const [sortBy, setSortBy] = useState(searchParams.get("sort") || "default");
+  const [featuredOnly, setFeaturedOnly] = useState(
+    searchParams.get("filter") === "featured",
+  );
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (searchQuery) params.set("search", searchQuery);
+    if (categoryFilter !== "all") params.set("category", categoryFilter);
+    if (continentFilter !== "all") params.set("continent", continentFilter);
+    if (priceRange !== "all") params.set("price", priceRange);
+    if (sortBy !== "default") params.set("sort", sortBy);
+    if (featuredOnly) params.set("filter", "featured");
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
+    // Update URL without triggering a navigation
+    router.replace(newUrl, { scroll: false });
+  }, [
+    searchQuery,
+    categoryFilter,
+    continentFilter,
+    priceRange,
+    sortBy,
+    featuredOnly,
+    pathname,
+    router,
+  ]);
 
   // Filter and sort destinations
   const filteredAndSortedDestinations = useMemo(() => {
     let filtered = [...initialDestinations];
+
+    // Featured filter (from URL)
+    if (featuredOnly) {
+      filtered = filtered.filter((dest) => dest.featured === true);
+    }
 
     // Search filter
     if (searchQuery) {
@@ -100,6 +153,7 @@ const DestinationsClient = ({ initialDestinations, categories, continents }) => 
     continentFilter,
     priceRange,
     sortBy,
+    featuredOnly,
   ]);
 
   // Check if any filters are active
@@ -107,7 +161,8 @@ const DestinationsClient = ({ initialDestinations, categories, continents }) => 
     searchQuery ||
     categoryFilter !== "all" ||
     continentFilter !== "all" ||
-    priceRange !== "all";
+    priceRange !== "all" ||
+    featuredOnly;
 
   // Clear all filters
   const clearFilters = () => {
@@ -115,6 +170,8 @@ const DestinationsClient = ({ initialDestinations, categories, continents }) => 
     setCategoryFilter("all");
     setContinentFilter("all");
     setPriceRange("all");
+    setFeaturedOnly(false);
+    setSortBy("default");
   };
 
   return (
