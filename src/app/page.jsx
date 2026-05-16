@@ -4,6 +4,8 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
 import CTASection from "@/components/home/CTASection";
 
+export const dynamic = "force-dynamic";
+
 const Home = () => {
   return (
     <>

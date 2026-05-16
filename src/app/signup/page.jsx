@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import GoogleAuth from "@/components/auth/GoogleAuth";
 import SignUpForm from "@/components/auth/SignUpForm";
 
@@ -20,7 +21,13 @@ const SignUpPage = () => {
           {/* Sign Up Card */}
           <div className="bg-surface rounded-3xl shadow-xl border border-border p-8">
             {/* Google Sign Up Button */}
-            <GoogleAuth />
+            <Suspense
+              fallback={
+                <div className="w-full h-12 bg-surface animate-pulse rounded-xl" />
+              }
+            >
+              <GoogleAuth />
+            </Suspense>
 
             {/* Divider */}
             <div className="relative my-6">

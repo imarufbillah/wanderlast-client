@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import GoogleAuth from "@/components/auth/GoogleAuth";
 import SignInForm from "@/components/auth/SignInForm";
 
@@ -20,7 +21,13 @@ const SignInPage = () => {
           {/* Sign In Card */}
           <div className="bg-surface rounded-3xl shadow-xl border border-border p-8">
             {/* Google Sign In Button */}
-            <GoogleAuth label="Sign in with Google" />
+            <Suspense
+              fallback={
+                <div className="w-full h-12 bg-surface animate-pulse rounded-xl" />
+              }
+            >
+              <GoogleAuth label="Sign in with Google" />
+            </Suspense>
 
             {/* Divider */}
             <div className="relative my-6">
@@ -35,7 +42,17 @@ const SignInPage = () => {
             </div>
 
             {/* Sign In Form */}
-            <SignInForm />
+            <Suspense
+              fallback={
+                <div className="space-y-5 animate-pulse">
+                  <div className="h-20 bg-surface rounded-xl" />
+                  <div className="h-20 bg-surface rounded-xl" />
+                  <div className="h-14 bg-surface rounded-xl" />
+                </div>
+              }
+            >
+              <SignInForm />
+            </Suspense>
 
             {/* Sign Up Link */}
             <p className="text-center text-sm text-text-muted font-body mt-6">

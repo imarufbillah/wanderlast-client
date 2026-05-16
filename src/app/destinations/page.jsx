@@ -8,6 +8,8 @@ import DestinationsHeader from "@/components/destinations/DestinationsHeader";
 import DestinationsClient from "@/components/destinations/DestinationsClient";
 import LoadingState from "@/components/destinations/LoadingState";
 
+export const dynamic = "force-dynamic";
+
 const DestinationsPage = async () => {
   const [destinations, categories, continents] = await Promise.all([
     getAllDestinations(),
