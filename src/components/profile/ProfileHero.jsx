@@ -1,4 +1,4 @@
-import { ShieldCheck, CalendarDays, MapPin } from "lucide-react";
+import { ShieldCheck, CalendarDays, MapPin, Shield } from "lucide-react";
 import ProfileAvatar from "./ProfileAvatar";
 
 const ProfileHero = ({ user }) => {
@@ -8,6 +8,8 @@ const ProfileHero = ({ user }) => {
         year: "numeric",
       })
     : null;
+
+  const isAdmin = user?.role === "admin";
 
   return (
     <div className="relative">
@@ -52,14 +54,28 @@ const ProfileHero = ({ user }) => {
                 Verified
               </span>
             )}
+            {isAdmin && (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-accent/10 text-accent font-bold rounded-full border border-accent/30">
+                <Shield className="w-4 h-4" />
+                Admin
+              </span>
+            )}
           </div>
         </div>
 
         {/* Name + email */}
         <div className="mt-3 sm:mt-2">
-          <h1 className="text-2xl sm:text-3xl font-bold font-heading text-text">
-            {user?.name ?? "Traveler"}
-          </h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-text">
+              {user?.name ?? "Traveler"}
+            </h1>
+            {isAdmin && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-accent/10 text-accent font-bold text-xs rounded-full border border-accent/30 sm:hidden">
+                <Shield className="w-3 h-3" />
+                Admin
+              </span>
+            )}
+          </div>
           <p className="text-text-muted font-body text-sm mt-0.5">
             {user?.email}
           </p>

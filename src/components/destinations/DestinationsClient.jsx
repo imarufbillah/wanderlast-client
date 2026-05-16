@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useToast } from "@/components/ui/ToastContainer";
 import SearchBar from "./SearchBar";
 import FilterBar from "./FilterBar";
 import ActiveFilters from "./ActiveFilters";
@@ -16,6 +17,19 @@ const DestinationsClient = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const toast = useToast();
+
+  // Check for unauthorized error from proxy redirect
+  useEffect(() => {
+    if (searchParams.get("error") === "unauthorized") {
+      toast.error("You need admin privileges to access that page");
+      // Remove error param from URL
+      const params = new URLSearchParams(searchParams);
+      params.delete("error");
+      const newUrl = params.toString() ? `${pathname}?${params}` : pathname;
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [searchParams, pathname, router, toast]);
 
   // Initialize state from URL params
   const [searchQuery, setSearchQuery] = useState(
