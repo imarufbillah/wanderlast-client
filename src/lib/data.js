@@ -1,6 +1,8 @@
 import { auth } from "./auth";
 import { headers } from "next/headers";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 /**
  * Helper function to get JWT token from Better Auth session
  * Returns the access token if user is authenticated
@@ -22,7 +24,7 @@ export const getBookingsByUserId = async (userId) => {
   try {
     const token = await getAuthToken();
 
-    const res = await fetch(`http://localhost:5000/bookings/${userId}`, {
+    const res = await fetch(`${API_BASE_URL}/bookings/${userId}`, {
       cache: "no-store",
       headers: {
         ...(token && { authorization: `Bearer ${token}` }),
@@ -42,7 +44,7 @@ export const getBookingsByUserId = async (userId) => {
 
 export const getAllDestinations = async () => {
   try {
-    const res = await fetch("http://localhost:5000/destinations", {
+    const res = await fetch(`${API_BASE_URL}/destinations`, {
       cache: "no-store",
     });
 
@@ -64,7 +66,7 @@ export const getFeaturedDestinations = async () => {
 
 export const getDestinationById = async (id) => {
   try {
-    const res = await fetch(`http://localhost:5000/destinations/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/destinations/${id}`, {
       cache: "no-store",
     });
 
@@ -81,7 +83,7 @@ export const getDestinationById = async (id) => {
 
 export const getAllCategories = async () => {
   try {
-    const res = await fetch("http://localhost:5000/destinations", {
+    const res = await fetch(`${API_BASE_URL}/destinations`, {
       cache: "no-store",
     });
 
@@ -102,7 +104,7 @@ export const getAllCategories = async () => {
 
 export const getAllCountries = async () => {
   try {
-    const res = await fetch("http://localhost:5000/destinations", {
+    const res = await fetch(`${API_BASE_URL}/destinations`, {
       cache: "no-store",
     });
 
@@ -121,7 +123,7 @@ export const getAllCountries = async () => {
 
 export const getAllContinents = async () => {
   try {
-    const res = await fetch("http://localhost:5000/destinations", {
+    const res = await fetch(`${API_BASE_URL}/destinations`, {
       cache: "no-store",
     });
 
