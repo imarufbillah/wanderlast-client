@@ -67,7 +67,7 @@ const Hero = () => {
         </div>
 
         {/* Search Bar - Bottom Positioned */}
-        <div className="shrink-0 pb-16 sm:pb-20 md:pb-24 px-3 sm:px-4 md:px-6 xl:px-20">
+        <div className="shrink-0 pb-16 sm:pb-20 md:pb-24 px-3 sm:px-4 md:px-6 xl:px-20 hidden sm:block">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row items-stretch gap-2 sm:gap-3">
               {/* Input Fields Container */}

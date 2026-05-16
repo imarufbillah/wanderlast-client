@@ -12,12 +12,14 @@ import {
   Loader2,
 } from "lucide-react";
 import BookingStatusBadge from "./BookingStatusBadge";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 import { deleteBooking } from "@/lib/api-client";
 import { useToast } from "@/components/ui/ToastContainer";
 
 const BookingCard = ({ booking, onCancelled }) => {
   const toast = useToast();
   const [isCancelling, setIsCancelling] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [imgError, setImgError] = useState(false);
 
   const formattedDate = booking.departureDate
@@ -41,6 +43,7 @@ const BookingCard = ({ booking, onCancelled }) => {
       await deleteBooking(booking._id);
       toast.success(`Booking for ${booking.destinationName} cancelled.`);
       onCancelled(booking._id);
+      setShowDeleteModal(false);
     } catch (error) {
       toast.error(
         error.message || "Could not cancel booking. Please try again.",
@@ -115,21 +118,30 @@ const BookingCard = ({ booking, onCancelled }) => {
 
             {status === "upcoming" && (
               <button
-                onClick={handleCancel}
+                onClick={() => setShowDeleteModal(true)}
                 disabled={isCancelling}
                 className="ml-auto flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold font-body text-red-500 border border-red-200 hover:bg-red-50 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2"
               >
-                {isCancelling ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <Trash2 className="w-3.5 h-3.5" />
-                )}
-                {isCancelling ? "Cancelling…" : "Cancel"}
+                <Trash2 className="w-3.5 h-3.5" />
+                Cancel
               </button>
             )}
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleCancel}
+        title="Cancel Booking?"
+        message={`Are you sure you want to cancel your booking for ${booking.destinationName}? This action cannot be undone.`}
+        confirmText="Yes, Cancel Booking"
+        cancelText="Keep Booking"
+        type="danger"
+        isLoading={isCancelling}
+      />
     </div>
   );
 };

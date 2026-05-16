@@ -15,7 +15,6 @@ const getClientToken = async () => {
     const {
       data: { token },
     } = await authClient.token();
-    console.log(token);
     return token || null;
   } catch (error) {
     console.error("Error getting client token:", error);

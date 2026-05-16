@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, LogOut } from "lucide-react";
+import { User, Luggage, LogOut } from "lucide-react";
 import UserAvatar from "./UserAvatar";
 import { NAV_LINKS } from "./NavLinks";
 
@@ -61,6 +61,15 @@ const MobileMenu = ({
             >
               <User className="w-4 h-4 shrink-0" />
               My Profile
+            </Link>
+
+            <Link
+              href="/bookings"
+              onClick={onClose}
+              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-body text-text hover:bg-background hover:text-accent transition-colors"
+            >
+              <Luggage className="w-4 h-4 shrink-0" />
+              My Bookings
             </Link>
 
             <button
