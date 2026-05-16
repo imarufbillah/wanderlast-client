@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, AlertTriangle } from "lucide-react";
 
 const ConfirmModal = ({
@@ -58,7 +59,7 @@ const ConfirmModal = ({
 
   const currentStyle = typeStyles[type] || typeStyles.danger;
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
       onClick={(e) => {
@@ -130,6 +131,9 @@ const ConfirmModal = ({
       </div>
     </div>
   );
+
+  // Render modal at root level using portal
+  return createPortal(modalContent, document.body);
 };
 
 export default ConfirmModal;

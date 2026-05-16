@@ -44,7 +44,7 @@ const BookingCard = ({
 
     try {
       await createBooking(data);
-      toast.success(
+      toast.create(
         `${destination.destinationName} booked! Check My Bookings for details.`,
       );
     } catch (error) {

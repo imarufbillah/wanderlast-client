@@ -76,7 +76,7 @@ const NewDestination = () => {
 
     try {
       await createDestination(data);
-      toast.success("Destination created successfully!");
+      toast.create("Destination created successfully!");
 
       // Reset form after successful submission
       form.reset();

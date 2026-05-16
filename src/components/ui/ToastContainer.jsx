@@ -30,6 +30,10 @@ export const ToastProvider = ({ children }) => {
     error: (message, duration) => addToast(message, "error", duration),
     warning: (message, duration) => addToast(message, "warning", duration),
     info: (message, duration) => addToast(message, "info", duration),
+    delete: (message, duration) => addToast(message, "delete", duration),
+    update: (message, duration) => addToast(message, "update", duration),
+    create: (message, duration) => addToast(message, "create", duration),
+    save: (message, duration) => addToast(message, "save", duration),
   };
 
   return (

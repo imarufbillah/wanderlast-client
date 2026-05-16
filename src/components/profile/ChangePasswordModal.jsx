@@ -125,7 +125,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
       return;
     }
 
-    toast.success(
+    toast.save(
       "Password changed successfully. Other sessions have been signed out.",
     );
     onClose();

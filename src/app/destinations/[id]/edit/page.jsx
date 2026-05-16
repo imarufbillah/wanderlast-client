@@ -104,7 +104,7 @@ const EditDestination = () => {
 
     try {
       await updateDestination(params.id, data);
-      toast.success("Destination updated successfully!");
+      toast.update("Destination updated successfully!");
 
       // Small delay to show toast before redirect
       setTimeout(() => {

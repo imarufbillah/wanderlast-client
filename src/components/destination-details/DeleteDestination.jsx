@@ -18,7 +18,7 @@ const DeleteDestination = ({ id, destinationName }) => {
 
     try {
       await deleteDestination(id);
-      toast.success("Destination deleted successfully!");
+      toast.delete("Destination deleted successfully!");
       setIsModalOpen(false);
       // Small delay to show toast before redirect
       setTimeout(() => {

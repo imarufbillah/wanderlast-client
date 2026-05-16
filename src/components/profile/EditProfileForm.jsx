@@ -58,7 +58,7 @@ const EditProfileForm = ({ user }) => {
     }
 
     setSaved(true);
-    toast.success("Profile updated successfully.");
+    toast.update("Profile updated successfully.");
   };
 
   return (

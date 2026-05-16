@@ -76,7 +76,7 @@ const ProfileAvatar = ({ user }) => {
         image: imageUrl,
       });
 
-      toast.success("Profile photo updated successfully!");
+      toast.update("Profile photo updated successfully!");
 
       // Refresh the page to show new image
       setTimeout(() => {

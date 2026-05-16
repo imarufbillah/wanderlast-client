@@ -41,7 +41,7 @@ const BookingCard = ({ booking, onCancelled }) => {
     setIsCancelling(true);
     try {
       await deleteBooking(booking._id);
-      toast.success(`Booking for ${booking.destinationName} cancelled.`);
+      toast.delete(`Booking for ${booking.destinationName} cancelled.`);
       onCancelled(booking._id);
       setShowDeleteModal(false);
     } catch (error) {
