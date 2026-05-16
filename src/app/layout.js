@@ -1,3 +1,6 @@
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 import { Inter, Sora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
