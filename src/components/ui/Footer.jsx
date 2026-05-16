@@ -16,7 +16,6 @@ import NewsletterForm from "./footer/NewsletterForm";
 const getExploreLinks = (isLoggedIn) => {
   const baseLinks = [
     { label: "Destinations", href: "/destinations" },
-    { label: "Featured Trips", href: "/destinations?filter=featured" },
     { label: "About Us", href: "/about" },
   ];
 

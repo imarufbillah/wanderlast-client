@@ -7,7 +7,10 @@ const FeaturedDestinations = async () => {
   const featuredDestinations = await getFeaturedDestinations();
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 lg:py-28 px-4 xl:px-20 bg-background">
+    <section
+      className="py-16 sm:py-20 md:py-24 lg:py-28 px-4 xl:px-20 bg-background"
+      id="featured"
+    >
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 sm:mb-12 md:mb-16">
         <div className="max-w-2xl">
